@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b18">
+  <meta name="description" content="Cool Kids Corner — good games, great people, and immaculate vibes.">
+  <title>Cool Kids Corner | Game On</title>
+  <link rel="icon" type="image/png" href="images/pngegg.png">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+  <header class="container">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="#home"><span class="brand-mark">🎮</span><span>Cool Kids <span
+            class="gradient-text">Corner</span></span></a>
+      <div class="nav-links"><a href="#about">About</a><a href="#perks">The Vibe</a><a href="#rules">Rules</a><a
+          class="button button-primary invite" href="#">Join the Discord ↗</a></div>
+    </nav>
+  </header>
+
+  <main id="home">
+    <div class="container hero">
+      <div>
+        <div class="eyebrow">🎧 Your next party starts here</div>
+        <h1>Good games.<br><span class="gradient-text">Great people.</span><br>Cool vibes.</h1>
+        <p>Welcome to <strong>Cool Kids Corner</strong> — a place to find your squad, share your clips, laugh at the
+          chaos, and make every lobby a little more fun.</p>
+        <div class="hero-actions"><a class="button button-primary invite" href="#">Join the Squad 🎮</a><a
+            class="button button-secondary" href="#about">Explore the Corner ↓</a></div>
+      </div>
+      <div class="hero-art" aria-label="Gaming-themed artwork"><span class="float f1">👑</span><span
+          class="float f2">✨</span><span class="float f3">💜</span><span class="float f4">⚡</span>
+        <div class="mascot">
+          <div class="emoji" aria-hidden="true">😎</div><strong class="gradient-text">COOL KIDS
+            CORNER</strong><small>PLAY • CONNECT • BE YOU</small>
+        </div>
+      </div>
+    </div>
+    <section id="about">
+      <div class="container">
+        <div class="section-heading">
+          <div class="eyebrow">Welcome to the lobby</div>
+          <h2>Your corner of the gaming universe.</h2>
+          <p>Whether you're here to sweat the ranked grind or just hang out, there's room for you in the squad.</p>
+        </div>
+        <div class="cards" id="perks">
+          <article class="card">
+            <div class="card-icon">🕹️</div>
+            <h3>Find Your Next Duo</h3>
+            <p>Meet players, build a squad, and find people who are always down for one more match.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">💬</div>
+            <h3>Hang Out & Have a Laugh</h3>
+            <p>Share memes, talk games, post clips, and turn random chats into great memories.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">✨</div>
+            <h3>Keep the Vibes Good</h3>
+            <p>Be yourself, respect the crew, and help make the Corner a place people want to return to.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section id="rules">
+      <div class="container rules">
+        <div class="section-heading">
+          <div class="eyebrow">The golden rules</div>
+          <h2>Keep it cool. 😎</h2>
+          <p>A great community starts with people treating each other right. Easy wins only.</p>
+        </div>
+        <div class="rules-panel">
+          <div class="rule"><span>01</span>
+            <p><strong>Respect everyone.</strong><br>No harassment, bullying, hate speech, or personal attacks.</p>
+          </div>
+          <div class="rule"><span>02</span>
+            <p><strong>Keep it appropriate.</strong><br>Follow Discord's rules and keep content in the right channels.
+            </p>
+          </div>
+          <div class="rule"><span>03</span>
+            <p><strong>No spam or drama.</strong><br>Let people chat, game, and enjoy the server without disruption.</p>
+          </div>
+          <div class="rule"><span>04</span>
+            <p><strong>Protect your privacy.</strong><br>Don't share passwords, private information, or someone else's
+              details.</p>
+          </div>
+          <div class="rule"><span>05</span>
+            <p><strong>Have fun and include people.</strong><br>Good games are better when everyone feels welcome.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="cta">
+          <div class="eyebrow">Party up?</div>
+          <h2>There's a spot for you here.</h2>
+          <p>Grab your headset, say hey, and jump into the next adventure with Cool Kids Corner.</p><a
+            class="button button-primary invite" href="#">Let's Game 🚀</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner"><span>© <span id="year"></span> Cool Kids Corner</span><span>Made for good games
+        and better company 💜</span></div>
+  </footer>
+  <script>
+    const DISCORD_INVITE_URL = "https://discord.gg/xqWWU6aaDK"; // Paste your permanent Discord invite URL between the quotes.
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.querySelectorAll(".invite").forEach(link => {
+      if (DISCORD_INVITE_URL) {link.href = DISCORD_INVITE_URL; link.target = "_blank"; link.rel = "noopener noreferrer";}
+      else {link.addEventListener("click", event => {event.preventDefault(); alert("Add your Discord invite URL to the DISCORD_INVITE_URL setting in this HTML file.");});}
+    });
+  </script>
+</body>
+
+</html>
