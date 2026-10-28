@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b18">
+  <meta name="description"
+    content="Browse the Cool Kids Corner game directory and find your next game or gaming group.">
+  <title>Cool Kids Corner | Game Directory</title>
+  <link rel="icon" type="image/png" href="pngegg.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="container">
+    <nav class="nav" aria-label="Main navigation">
+
+      <a class="brand" href="index.html" aria-label="Cool Kids Corner home">
+        <span class="brand-mark" aria-hidden="true">🎮</span>
+        <span>Cool Kids <span class="gradient-text">Corner</span></span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">
+        <span aria-hidden="true">☰</span>
+        <span>Menu</span>
+      </button>
+
+      <div class="nav-links" id="site-navigation">
+        <a href="index.html">Home</a>
+
+        <div class="dropdown">
+          <button class="dropbtn" type="button">Games ▾</button>
+          <div class="dropdown-content">
+            <a href="games.html">All Games</a>
+            <a href="tabletop.html">Tabletop</a>
+            <a href="tcg.html">Card Games</a>
+          </div>
+        </div>
+
+        <a href="events.html">Events</a>
+        <a href="community.html">Community</a>
+        <a href="profile.html">Profile</a>
+        <a href="support.html">Support</a>
+
+        <a class="button button-primary invite" href="https://discord.gg/xqWWU6aaDK" target="_blank"
+          rel="noopener noreferrer">
+          Join Discord ↗
+        </a>
+      </div>
+
+    </nav>
+  </header>
+  <main id="main-content" class="container">
+    <section class="page-hero">
+      <div class="eyebrow">Find your next obsession</div>
+      <h1>Game <span class="gradient-text">Directory.</span></h1>
+      <p>From cozy hangouts to survival chaos, fantasy adventures, explore the games our community
+        enjoys. Use the search and filters to find your kind of game.</p>
+      <div class="directory-tools"><input id="game-search" type="search" aria-label="Search games"
+          placeholder="Search by game name or genre…"><select id="category-filter"
+          aria-label="Filter games by category">
+          <option value="all">All categories</option>
+          <option value="survival">Survival</option>
+          <option value="sandbox">Sandbox</option>
+          <option value="cozy">Cozy</option>
+          <option value="social">Social</option>
+          <option value="mmo">MMO</option>
+          <option value="action">Action</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="adventure">Adventure</option>
+        </select></div>
+      <div class="filter-chips" aria-label="Quick category filters">
+        <button class="filter-chip" type="button" data-filter="all" aria-pressed="true">All games</button>
+        <button class="filter-chip" type="button" data-filter="survival">Survival</button>
+        <button class="filter-chip" type="button" data-filter="sandbox">Sandbox</button>
+        <button class="filter-chip" type="button" data-filter="cozy">Cozy</button>
+        <button class="filter-chip" type="button" data-filter="social">Social</button>
+        <button class="filter-chip" type="button" data-filter="mmo">MMO</button>
+        <button class="filter-chip" type="button" data-filter="action">Action</button>
+        <button class="filter-chip" type="button" data-filter="fantasy">Fantasy</button>
+        <button class="filter-chip" type="button" data-filter="adventure">Adventure</button>
+      </div>
+      <p class="result-count" id="result-count" aria-live="polite">Showing all games</p>
+    </section>
+    <section aria-label="Games">
+      <div class="game-grid" id="game-grid">
+        <article class="game-card" data-category="survival mmo action"
+          data-search="the isle dinosaur survival creature simulator">
+          <div class="game-icon" aria-hidden="true">🦖</div>
+          <h2>The Isle</h2>
+          <p>Survive, grow, and explore a dangerous world as a dinosaur.</p><span class="game-meta">Survival</span><span
+            class="game-meta">Dinosaurs</span><a href="community.html">Find players →</a>
+        </article>
+        <article class="game-card" data-category="cozy social mmo"
+          data-search="palia cozy life sim community crafting fantasy">
+          <div class="game-icon" aria-hidden="true">🌱</div>
+          <h2>Palia</h2>
+          <p>A cozy community sim full of crafting, friendships, and discovery.</p><span
+            class="game-meta">Cozy</span><span class="game-meta">Social</span><a href="community.html">Find players
+            →</a>
+        </article>
+        <article class="game-card" data-category="survival sandbox mmo"
+          data-search="minecraft building crafting survival sandbox blocks">
+          <div class="game-icon" aria-hidden="true">⛏️</div>
+          <h2>Minecraft</h2>
+          <p>Build, craft, explore, and make your own blocky adventures.</p><span class="game-meta">Sandbox</span><span
+            class="game-meta">Building</span><a href="community.html">Find players →</a>
+        </article>
+        <article class="game-card" data-category="mmo fantasy adventure action"
+          data-search="elder scrolls online eso mmo fantasy tamriel questing">
+          <div class="game-icon" aria-hidden="true">⚔️</div>
+          <h2>The Elder Scrolls Online</h2>
+          <p>Explore Tamriel, take on quests, and adventure with a group.</p><span class="game-meta">MMO</span><span
+            class="game-meta">Fantasy</span><a href="community.html">Find players →</a>
+        </article>
+        <article class="game-card" data-category="survival mmo action"
+          data-search="day of dragons dragon survival multiplayer creature">
+          <div class="game-icon" aria-hidden="true">🐉</div>
+          <h2>Day of Dragons</h2>
+          <p>Take to the skies in a multiplayer dragon survival world.</p><span class="game-meta">Survival</span><span
+            class="game-meta">Dragons</span><a href="community.html">Find players →</a>
+        </article>
+        <article class="game-card" data-category="fantasy mmo adventure action"
+          data-search="dungeons dragons dnd tabletop roleplaying rpg dice campaign">
+          <div class="game-icon" aria-hidden="true">🎲</div>
+          <h2>Dungeons & Dragons</h2>
+          <p>Create characters, roll dice, and tell unforgettable stories.</p><span class="game-meta">Tabletop
+            RPG</span><span class="game-meta">Fantasy</span><a href="tabletop.html">Explore tabletop →</a>
+        </article>
+        <article class="game-card" data-category="fantasy action"
+          data-search="pokemon trading card game tcg collecting battling deck">
+          <div class="game-icon" aria-hidden="true">🃏</div>
+          <h2>Pokémon TCG</h2>
+          <p>Collect cards, build decks, and enjoy the trading card game.</p><span class="game-meta">Card
+            Game</span><span class="game-meta">Collecting</span><a href="tcg.html">Explore card games →</a>
+        </article>
+        <article class="game-card" data-category="fantasy action"
+          data-search="magic the gathering mtg tcg trading card deck building">
+          <div class="game-icon" aria-hidden="true">✨</div>
+          <h2>Magic: The Gathering</h2>
+          <p>Build a deck, outthink your opponent, and find your play style.</p><span class="game-meta">Card
+            Game</span><span class="game-meta">Strategy</span><a href="tcg.html">Explore card games →</a>
+        </article>
+        <article class="game-card" data-category="fantasy action" data-search="world of warcraft wow fantasy">
+          <div class="game-icon" aria-hidden="true">🧙‍♂️</div>
+          <h2>World of Warcraft</h2>
+          <p>Create powerful heroes, explore magical worlds, battle fearsome monsters, and team up with friends on
+            legendary adventures.</p><span class="game-meta">Fantasy
+          </span><span class="game-meta">Action</span><a href="tcg.html">Find players →</a>
+        </article>
+        <article class="game-card" data-category="mmo social adventure" data-search="roblox social adventure">
+          <div class="game-icon" aria-hidden="true">🟦</div>
+          <h2>Roblox</h2>
+          <p>Explore countless user-created worlds, embark on exciting adventures, and unleash their creativity with friends.</p><span class="game-meta">
+            Adventure</span><span class="game-meta">Social</span><a href="community.html">Find players →</a>
+        </article>
+        <article class="game-card" data-category="mmo fantasy adventure action" data-search="final fantasy xiv adventure action">
+          <div class="game-icon" aria-hidden="true">🛡️</div>
+          <h2>Final Fantasy XIV</h2>
+          <p>Create unique heroes, explore breathtaking worlds, battle powerful enemies, and join friends on epic quests filled with magic and adventure.</p><span class="game-meta">
+            Adventure</span><span class="game-meta">Fantasy</span><a href="community.html">Find players →</a>
+        </article>
+      </div>
+      <p id="empty-state" class="empty-state" hidden>No games match that search yet. Try another name or category.</p>
+    </section>
+    <section id="guides">
+      <div class="section-heading">
+        <div class="eyebrow">Share what you know</div>
+        <h2>Guides & helpful resources</h2>
+        <p>We’ll grow this section with beginner tips, community-made guides, and useful links for the games we play.
+        </p><a class="section-link" href="community.html">Ask the community for tips →</a>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container footer-inner"><span>© <span id="year"></span> Cool Kids Corner</span>
+      <div class="footer-links"><a href="index.html">Home</a><a href="community.html">Community</a><a
+          href="events.html">Events</a><a href="support.html">Support</a><a href="https://discord.gg/xqWWU6aaDK"
+          target="_blank" rel="noopener noreferrer">Discord ↗</a></div><span>Made for good games and better company
+        💜</span>
+    </div>
+  </footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const menuToggle = document.querySelector('.menu-toggle'); const nav = document.getElementById('site-navigation');
+    menuToggle.addEventListener('click', () => { const open = menuToggle.getAttribute('aria-expanded') === 'true'; menuToggle.setAttribute('aria-expanded', String(!open)); nav.classList.toggle('is-open', !open); });
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menuToggle.setAttribute('aria-expanded', 'false'); nav.classList.remove('is-open'); }));
+    const search = document.getElementById('game-search'); const select = document.getElementById('category-filter'); const cards = [...document.querySelectorAll('.game-card')]; const count = document.getElementById('result-count'); const empty = document.getElementById('empty-state'); const chips = [...document.querySelectorAll('.filter-chip')];
+    const params = new URLSearchParams(window.location.search); search.value = params.get('q') || '';
+    function applyFilter(category) { select.value = category; chips.forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.filter === category))); const term = search.value.trim().toLowerCase(); let shown = 0; cards.forEach(card => { const matchesTerm = (card.dataset.search + ' ' + card.textContent).toLowerCase().includes(term); const matchesCategory = category === 'all' || card.dataset.category.split(/\s+/).includes(category); const visible = matchesTerm && matchesCategory; card.hidden = !visible; if (visible) shown++; }); count.textContent = `Showing ${shown} of ${cards.length} games`; empty.hidden = shown !== 0; }
+    search.addEventListener('input', () => applyFilter(select.value)); select.addEventListener('change', () => applyFilter(select.value)); chips.forEach(chip => chip.addEventListener('click', () => applyFilter(chip.dataset.filter))); applyFilter('all');
+  </script>
+</body>
+
+</html>

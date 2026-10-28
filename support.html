@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#080b18">
+    <meta name="description"
+        content="Learn how optional community support helps Cool Kids Corner maintain the website and host community activities.">
+    <title>Support the Corner | Cool Kids Corner</title>
+    <link rel="icon" type="image/png" href="images/pngegg.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="container">
+        <nav class="nav" aria-label="Main navigation">
+
+            <a class="brand" href="index.html" aria-label="Cool Kids Corner home">
+                <span class="brand-mark" aria-hidden="true">🎮</span>
+                <span>Cool Kids <span class="gradient-text">Corner</span></span>
+            </a>
+
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">
+                <span aria-hidden="true">☰</span>
+                <span>Menu</span>
+            </button>
+
+            <div class="nav-links" id="site-navigation">
+                <a href="index.html">Home</a>
+
+                <div class="dropdown">
+                    <button class="dropbtn" type="button">Games ▾</button>
+                    <div class="dropdown-content">
+                        <a href="games.html">All Games</a>
+                        <a href="tabletop.html">Tabletop</a>
+                        <a href="tcg.html">Card Games</a>
+                    </div>
+                </div>
+
+                <a href="events.html">Events</a>
+                <a href="community.html">Community</a>
+                <a href="profile.html">Profile</a>
+                <a href="support.html">Support</a>
+
+                <a class="button button-primary invite" href="https://discord.gg/xqWWU6aaDK" target="_blank"
+                    rel="noopener noreferrer">
+                    Join Discord ↗
+                </a>
+            </div>
+
+        </nav>
+    </header>
+    <main id="main-content" class="container">
+        <section class="page-hero">
+            <div class="eyebrow">Help the Corner keep growing</div>
+            <h1>Support <span class="gradient-text">Cool Kids Corner.</span></h1>
+            <p>This community is built around people coming together to play, share, and have a good time. Optional
+                support helps keep the website running and gives us more room to create community activities and improve
+                the experience for everyone.</p>
+        </section>
+        <section>
+            <div class="section-heading">
+                <div class="eyebrow">What support helps with</div>
+                <h2>Small contributions can help a lot.</h2>
+                <p>Support is always optional. You can enjoy the community without donating, and we appreciate you being
+                    here either way.</p>
+            </div>
+            <div class="content-grid">
+                <article class="content-card">
+                    <div class="icon" aria-hidden="true">🌐</div>
+                    <h3>Website & Hosting</h3>
+                    <p>Help cover website-related costs and keep community information easy to find.</p>
+                </article>
+                <article class="content-card">
+                    <div class="icon" aria-hidden="true">🛠️</div>
+                    <h3>Development & Improvements</h3>
+                    <p>Support the time spent building new pages, maintaining the site, and improving community
+                        resources.</p>
+                </article>
+                <article class="content-card">
+                    <div class="icon" aria-hidden="true">🎉</div>
+                    <h3>Community Activities</h3>
+                    <p>Help make room for events, activities, and other ideas that bring members together.</p>
+                </article>
+            </div>
+        </section>
+        <section>
+            <div class="support-panel">
+                <div class="eyebrow">Thank you for being part of this</div>
+                <h2>Help Keep the Respawn Point Alive! 💜</h2>
+                <p>Cool Kids Corner runs on friendship, gaming, questionable decisions, and probably too much caffeine. 
+                    Your support helps us grow the community, create awesome events, and keep the good times rolling. 
+                    No pressure, no pay-to-win—just a little love for the place we all call home.
+                </p>
+                <a class="button button-primary" href="https://ko-fi.com/REPLACE_WITH_YOUR_PAGE" target="_blank"
+                    rel="noopener noreferrer">Fuel the Chaos ☕</a>
+                <p class="fine-print">Before publishing, replace <code>REPLACE_WITH_YOUR_PAGE</code> in this link with
+                    your real Ko-fi username or page URL. Don't leave the placeholder link live.</p>
+            </div>
+        </section>
+        <section>
+            <div class="section-heading">
+                <div class="eyebrow">A quick note</div>
+                <h2>Support is voluntary.</h2>
+                <p>Donations are optional and do not buy moderation privileges or guarantee any particular service,
+                    event, or reward. We'll be clear about any supporter perks if we add them later. Ko-fi and its
+                    payment providers handle payment processing under their own terms.</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container footer-inner"><span>© <span id="year"></span> Cool Kids Corner</span>
+            <div class="footer-links"><a href="index.html">Home</a><a href="games.html">Games</a><a
+                    href="community.html">Community</a><a href="events.html">Events</a><a
+                    href="https://discord.gg/xqWWU6aaDK" target="_blank" rel="noopener noreferrer">Discord ↗</a></div>
+            <span>Made for good games and better company 💜</span>
+        </div>
+    </footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear(); const t = document.querySelector('.menu-toggle'), n = document.getElementById('site-navigation'); t.addEventListener('click', () => { const o = t.getAttribute('aria-expanded') === 'true'; t.setAttribute('aria-expanded', String(!o)); n.classList.toggle('is-open', !o) }); n.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { t.setAttribute('aria-expanded', 'false'); n.classList.remove('is-open') }));</script>
+</body>
+
+</html>

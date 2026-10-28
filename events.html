@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#080b18">
+    <meta name="description"
+        content="Find gaming sessions, tabletop meetups, and community events at Cool Kids Corner.">
+    <title>Events | Cool Kids Corner</title>
+    <link rel="icon" type="image/png" href="images/pngegg.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body><a class="skip-link" href="#main-content">Skip to main content</a>
+<header class="container">
+  <nav class="nav" aria-label="Main navigation">
+
+    <a class="brand" href="index.html" aria-label="Cool Kids Corner home">
+      <span class="brand-mark" aria-hidden="true">🎮</span>
+      <span>Cool Kids <span class="gradient-text">Corner</span></span>
+    </a>
+
+    <button class="menu-toggle" type="button"
+      aria-expanded="false" aria-controls="site-navigation">
+      <span aria-hidden="true">☰</span>
+      <span>Menu</span>
+    </button>
+
+    <div class="nav-links" id="site-navigation">
+      <a href="index.html">Home</a>
+
+      <div class="dropdown">
+        <button class="dropbtn" type="button">Games ▾</button>
+        <div class="dropdown-content">
+          <a href="games.html">All Games</a>
+          <a href="tabletop.html">Tabletop</a>
+          <a href="tcg.html">Card Games</a>
+        </div>
+      </div>
+
+      <a href="events.html">Events</a>
+      <a href="community.html">Community</a>
+      <a href="profile.html">Profile</a>
+      <a href="support.html">Support</a>
+
+      <a class="button button-primary invite"
+         href="https://discord.gg/xqWWU6aaDK"
+         target="_blank" rel="noopener noreferrer">
+        Join Discord ↗
+      </a>
+    </div>
+
+  </nav>
+</header>
+    <main id="main-content" class="container">
+        <section class="page-hero">
+            <div class="eyebrow">Let's get the party together</div>
+            <h1>Community <span class="gradient-text">Events.</span></h1>
+            <p>Game nights, tabletop sessions, casual hangouts, and community challenges are all ways to make the Corner
+                feel a little smaller and a lot more fun.</p>
+            <div class="hero-actions"><a class="button button-primary" href="https://discord.gg/xqWWU6aaDK"
+                    target="_blank" rel="noopener noreferrer">Check Discord for Updates 📅</a><a
+                    class="button button-secondary" href="games.html">Find a Game</a></div>
+        </section>
+        <section aria-labelledby="live-events-title">
+            <div class="section-heading">
+                <div class="eyebrow">From our Discord</div>
+                <h2 id="live-events-title">Latest announced events</h2>
+                <p>Events created by our team using the Discord /event command.</p>
+            </div>
+            <div id="live-events-status" class="event-note" role="status">Loading events…</div>
+            <div id="live-events" class="content-grid" aria-live="polite"></div>
+        </section>
+        <section>
+            <div class="section-heading">
+                <div class="eyebrow">Ways to join in</div>
+                <h2>Make time for some fun.</h2>
+                <p>These are event types the community can organize. Specific sessions will be listed when details are
+                    available.</p>
+            </div>
+            <div class="content-grid">
+                <article class="content-card">
+                    <div class="icon" aria-hidden="true">🎮</div>
+                    <h3>Group Gaming</h3>
+                    <p>Team up for multiplayer sessions, co-op adventures, survival games, and casual play nights.</p><a
+                        class="section-link" href="games.html">Browse games →</a>
+                </article>
+                <article class="content-card">
+                    <div class="icon" aria-hidden="true">🎲</div>
+                    <h3>Tabletop Sessions</h3>
+                    <p>Find a one-shot, join a campaign, or gather a party for a night of storytelling and dice.</p><a
+                        class="section-link" href="tabletop.html">Explore tabletop →</a>
+                </article>
+                <article class="content-card">
+                    <div class="icon" aria-hidden="true">🃏</div>
+                    <h3>Card Game Hangouts</h3>
+                    <p>Share deck ideas, learn a new game, and connect with fellow collectors and players.</p><a
+                        class="section-link" href="tcg.html">Explore card games →</a>
+                </article>
+            </div>
+        </section>
+        <section>
+            <div class="callout">
+                <div class="eyebrow">Have an idea?</div>
+                <h2>Help us plan the next get-together.</h2>
+                <p>Want to host a game night or suggest a community activity? Bring the idea to Discord so people can
+                    discuss it, find a time, and get organized.</p><a class="button button-primary"
+                    href="https://discord.gg/xqWWU6aaDK" target="_blank" rel="noopener noreferrer">Suggest an Event
+                    ↗</a>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container footer-inner"><span>© <span id="year"></span> Cool Kids Corner</span>
+            <div class="footer-links"><a href="index.html">Home</a><a href="games.html">Games</a><a
+                    href="community.html">Community</a><a href="support.html">Support</a><a
+                    href="https://discord.gg/xqWWU6aaDK" target="_blank" rel="noopener noreferrer">Discord ↗</a></div>
+            <span>Made for good games and better company 💜</span>
+        </div>
+    </footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear(); const t = document.querySelector('.menu-toggle'), n = document.getElementById('site-navigation'); t.addEventListener('click', () => { const o = t.getAttribute('aria-expanded') === 'true'; t.setAttribute('aria-expanded', String(!o)); n.classList.toggle('is-open', !o) }); n.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { t.setAttribute('aria-expanded', 'false'); n.classList.remove('is-open') }));</script>
+
+    <script>
+    (async () => {
+        const container = document.getElementById('live-events');
+        const status = document.getElementById('live-events-status');
+        try {
+            const response = await fetch('events.json', {cache: 'no-store'});
+            if (!response.ok) throw new Error('Events data not available');
+            const events = await response.json();
+            if (!Array.isArray(events)) throw new Error('Invalid events data');
+            if (events.length === 0) {
+                status.textContent = 'No events announced yet. Check back soon!';
+                return;
+            }
+            status.hidden = true;
+            for (const event of events) {
+                const card = document.createElement('article');
+                card.className = 'content-card';
+                const icon = document.createElement('div');
+                icon.className = 'icon';
+                icon.setAttribute('aria-hidden', 'true');
+                icon.textContent = '📅';
+                const heading = document.createElement('h3');
+                heading.textContent = event.title || 'Community event';
+                const when = document.createElement('p');
+                const strong = document.createElement('strong');
+                strong.textContent = 'When: ';
+                when.append(strong, document.createTextNode(event.when || 'To be announced'));
+                const details = document.createElement('p');
+                details.textContent = event.details || '';
+                card.append(icon, heading, when, details);
+                if (typeof event.discord_url === 'string' && /^https:\/\/discord\.com\/channels\/\d+\/\d+\/\d+$/.test(event.discord_url)) {
+                    const link = document.createElement('a');
+                    link.className = 'section-link';
+                    link.href = event.discord_url;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    link.textContent = 'View on Discord →';
+                    card.append(link);
+                }
+                container.append(card);
+            }
+        } catch (error) {
+            status.textContent = 'Events are temporarily unavailable. Check Discord for the latest announcements.';
+        }
+    })();
+    </script>
+</body>
+
+</html>

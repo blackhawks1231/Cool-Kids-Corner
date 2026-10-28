@@ -1,2 +1,2 @@
 # Cool-Kids-Corner
-Made for gamers by gamers
+A place where cool kids can play with other cool kids

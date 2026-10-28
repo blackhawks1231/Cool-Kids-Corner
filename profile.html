@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b18">
+  <meta name="description"
+    content="Your Cool Kids Corner member profile template: share your favorite games, hobbies, and community interests.">
+  <title>Member Profile | Cool Kids Corner</title>
+  <link rel="icon" type="image/png" href="images/pngegg.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="container">
+  <nav class="nav" aria-label="Main navigation">
+
+    <a class="brand" href="index.html" aria-label="Cool Kids Corner home">
+      <span class="brand-mark" aria-hidden="true">🎮</span>
+      <span>Cool Kids <span class="gradient-text">Corner</span></span>
+    </a>
+
+    <button class="menu-toggle" type="button"
+      aria-expanded="false" aria-controls="site-navigation">
+      <span aria-hidden="true">☰</span>
+      <span>Menu</span>
+    </button>
+
+    <div class="nav-links" id="site-navigation">
+      <a href="index.html">Home</a>
+
+      <div class="dropdown">
+        <button class="dropbtn" type="button">Games ▾</button>
+        <div class="dropdown-content">
+          <a href="games.html">All Games</a>
+          <a href="tabletop.html">Tabletop</a>
+          <a href="tcg.html">Card Games</a>
+        </div>
+      </div>
+
+      <a href="events.html">Events</a>
+      <a href="community.html">Community</a>
+      <a href="profile.html">Profile</a>
+      <a href="support.html">Support</a>
+
+      <a class="button button-primary invite"
+         href="https://discord.gg/xqWWU6aaDK"
+         target="_blank" rel="noopener noreferrer">
+        Join Discord ↗
+      </a>
+    </div>
+
+  </nav>
+</header>
+
+  <main id="main-content" class="container">
+    <section class="page-hero">
+      <div class="eyebrow">Your corner of the Corner</div>
+      <h1>Member <span class="gradient-text">Profile.</span></h1>
+      <p>A little space to show off what you love playing, what you're into, and the kinds of adventures you'd like to
+        join.</p>
+    </section>
+
+    <aside class="template-note" aria-label="Profile template note">
+      <strong>Starter profile template</strong>
+      <p>This page is currently a static example. You can edit the sample details in <code>profile.html</code>, but
+        changes aren't saved through a form and members don't have individual logins yet.</p>
+    </aside>
+
+    <div class="profile-layout">
+      <aside class="profile-card" aria-label="Member summary">
+        <div class="avatar" aria-hidden="true">🦊</div>
+        <div class="eyebrow">Cool Kids Corner member</div>
+        <h2>Player Name</h2>
+        <span class="member-tag">🎮 Casual gamer · Friendly adventurer</span>
+        <p class="muted">Here for good games, cozy hangs, chaotic quests, and meeting nice people to play with.</p>
+        <div class="profile-actions">
+          <a class="button button-primary" href="https://discord.gg/xqWWU6aaDK" target="_blank"
+            rel="noopener noreferrer">Find us on Discord ↗</a>
+          <a class="button button-secondary" href="games.html">Browse Games</a>
+        </div>
+      </aside>
+
+      <div class="profile-details">
+        <section class="profile-section">
+          <div class="eyebrow">A bit about me</div>
+          <h2>Hey, welcome to my profile!</h2>
+          <p>I'm into exploring new worlds, teaming up for co-op adventures, collecting cool cards, and making up
+            stories around a tabletop. I'm always happy to hear about a game you think I should try.</p>
+        </section>
+
+        <section class="profile-section">
+          <div class="eyebrow">Currently playing</div>
+          <h2>Favorite games</h2>
+          <div class="tag-list"><span class="tag">🌿 Palia</span><span class="tag">🦖 The Isle</span><span
+              class="tag">⛏️ Minecraft</span><span class="tag">⚔️ Elder Scrolls Online</span><span class="tag">🐉 Day of
+              Dragons</span></div>
+        </section>
+
+        <section class="profile-section">
+          <div class="eyebrow">Beyond the screen</div>
+          <h2>Other interests</h2>
+          <div class="interest-grid">
+            <div class="interest"><strong>🎲 Tabletop RPGs</strong><span>Dungeons & Dragons, character creation, and
+                collaborative storytelling.</span></div>
+            <div class="interest"><strong>🃏 Trading Card Games</strong><span>Pokémon TCG, Magic: The Gathering, and
+                Riftbound.</span></div>
+            <div class="interest"><strong>📅 Community Events</strong><span>Game nights, group adventures, and
+                low-pressure hangouts.</span></div>
+            <div class="interest"><strong>✨ Looking for</strong><span>Friendly teammates, new games to try, and people
+                to share the fun with.</span></div>
+          </div>
+        </section>
+
+        <section class="profile-section">
+          <div class="eyebrow">Say hello</div>
+          <h2>Let's play something!</h2>
+          <p>Want to find a group or meet other members? Drop by the community Discord and introduce yourself whenever
+            you're ready.</p>
+          <a class="section-link" href="community.html">Learn about the community →</a>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner"><span>© <span id="year"></span> Cool Kids Corner</span>
+      <div class="footer-links"><a href="index.html">Home</a><a href="games.html">Games</a><a
+          href="tabletop.html">Tabletop</a><a href="events.html">Events</a><a href="support.html">Support</a><a
+          href="https://discord.gg/xqWWU6aaDK" target="_blank" rel="noopener noreferrer">Discord ↗</a></div><span>Made
+        for good games and better company 💜</span>
+    </div>
+  </footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const toggle = document.querySelector('.menu-toggle');
+    const navigation = document.getElementById('site-navigation');
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      navigation.classList.toggle('is-open', !expanded);
+    });
+    navigation.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      navigation.classList.remove('is-open');
+    }));
+  </script>
+</body>
+
+</html>

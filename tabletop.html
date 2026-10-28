@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#080b18">
+    <meta name="description"
+        content="Discover tabletop roleplaying games, campaigns, and character-building fun at Cool Kids Corner.">
+    <title>Tabletop Adventures | Cool Kids Corner</title>
+    <link rel="icon" type="image/png" href="images/pngegg.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="container">
+        <nav class="nav" aria-label="Main navigation">
+
+            <a class="brand" href="index.html" aria-label="Cool Kids Corner home">
+                <span class="brand-mark" aria-hidden="true">🎮</span>
+                <span>Cool Kids <span class="gradient-text">Corner</span></span>
+            </a>
+
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">
+                <span aria-hidden="true">☰</span>
+                <span>Menu</span>
+            </button>
+
+            <div class="nav-links" id="site-navigation">
+                <a href="index.html">Home</a>
+
+                <div class="dropdown">
+                    <button class="dropbtn" type="button">Games ▾</button>
+                    <div class="dropdown-content">
+                        <a href="games.html">All Games</a>
+                        <a href="tabletop.html">Tabletop</a>
+                        <a href="tcg.html">Card Games</a>
+                    </div>
+                </div>
+
+                <a href="events.html">Events</a>
+                <a href="community.html">Community</a>
+                <a href="profile.html">Profile</a>
+                <a href="support.html">Support</a>
+
+                <a class="button button-primary invite" href="https://discord.gg/xqWWU6aaDK" target="_blank"
+                    rel="noopener noreferrer">
+                    Join Discord ↗
+                </a>
+            </div>
+
+        </nav>
+    </header>
+    <main id="main-content" class="container">
+        <section class="page-hero">
+            <div class="eyebrow">Gather your party</div>
+            <h1>Tabletop <span class="gradient-text">Adventures.</span></h1>
+            <p>Roll initiative, invent a legend, solve a mystery, or just enjoy a good night of storytelling. This is
+                the place for tabletop roleplaying games and the people who love them.</p>
+            <div class="hero-actions"><a class="button button-primary" href="https://discord.gg/xqWWU6aaDK"
+                    target="_blank" rel="noopener noreferrer">Find Your Party 🎲</a><a class="button button-secondary"
+                    href="events.html">Check Community Events</a></div>
+        </section>
+        <section>
+            <div class="section-heading">
+                <div class="eyebrow">Choose your adventure</div>
+                <h2>Every great story starts somewhere.</h2>
+                <p>Here are a few ways to get involved. Specific campaigns, schedules, and game-master openings can be
+                    added as the community organizes them.</p>
+            </div>
+            <div class="content-grid">
+                <article class="content-card">
+                    <div class="icon" aria-hidden="true">🐉</div>
+                    <h3>Dungeons & Dragons</h3>
+                    <p>Create a character, explore fantastical worlds, fight monsters, and shape a story with your
+                        party.</p><a class="section-link" href="community.html">Ask about D&D groups →</a>
+                </article>
+                <article class="content-card">
+                    <div class="icon" aria-hidden="true">🧙</div>
+                    <h3>Characters & Worldbuilding</h3>
+                    <p>Share character concepts, backstories, maps, homebrew ideas, and the lore you've been building.
+                    </p><a class="section-link" href="community.html">Share an idea →</a>
+                </article>
+                <article class="content-card">
+                    <div class="icon" aria-hidden="true">🎲</div>
+                    <h3>One-shots & Campaigns</h3>
+                    <p>Whether you're looking for a one-night adventure or a longer campaign, start by meeting fellow
+                        players.</p><a class="section-link" href="events.html">Look for events →</a>
+                </article>
+            </div>
+        </section>
+        <section>
+            <div class="callout">
+                <div class="eyebrow">New to tabletop?</div>
+                <h2>No experience required.</h2>
+                <p>You don't need to know every rule or have a perfect character idea. Bring your curiosity, ask
+                    questions, and learn as you go. We'll add beginner resources and campaign details here as they
+                    become available.</p><a class="button button-primary" href="https://discord.gg/xqWWU6aaDK"
+                    target="_blank" rel="noopener noreferrer">Say Hello on Discord ↗</a>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container footer-inner"><span>© <span id="year"></span> Cool Kids Corner</span>
+            <div class="footer-links"><a href="index.html">Home</a><a href="games.html">Games</a><a
+                    href="events.html">Events</a><a href="support.html">Support</a><a
+                    href="https://discord.gg/xqWWU6aaDK" target="_blank" rel="noopener noreferrer">Discord ↗</a></div>
+            <span>Made for good games and better company 💜</span>
+        </div>
+    </footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear(); const t = document.querySelector('.menu-toggle'), n = document.getElementById('site-navigation'); t.addEventListener('click', () => { const o = t.getAttribute('aria-expanded') === 'true'; t.setAttribute('aria-expanded', String(!o)); n.classList.toggle('is-open', !o) }); n.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { t.setAttribute('aria-expanded', 'false'); n.classList.remove('is-open') }));</script>
+</body>
+
+</html>

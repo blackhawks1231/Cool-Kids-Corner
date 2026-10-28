@@ -1,121 +1,406 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080b18">
-  <meta name="description" content="Cool Kids Corner — good games, great people, and immaculate vibes.">
-  <title>Cool Kids Corner | Game On</title>
-  <link rel="icon" type="image/png" href="images/pngegg.png">
+
+  <meta name="description"
+    content="Welcome to Cool Kids Corner — a gaming community for finding your people, discovering games, joining events, and sharing adventures.">
+
+  <title>Cool Kids Corner | Home</title>
+
+  <link rel="icon" type="image/png" href="pngegg.png">
   <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
-  <header class="container">
-    <nav class="nav" aria-label="Main navigation">
-      <a class="brand" href="#home"><span class="brand-mark">🎮</span><span>Cool Kids <span
-            class="gradient-text">Corner</span></span></a>
-      <div class="nav-links"><a href="#about">About</a><a href="#perks">The Vibe</a><a href="#rules">Rules</a><a
-          class="button button-primary invite" href="#">Join the Discord ↗</a></div>
-    </nav>
-  </header>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <main id="home">
-    <div class="container hero">
-      <div>
-        <div class="eyebrow">🎧 Your next party starts here</div>
-        <h1>Good games.<br><span class="gradient-text">Great people.</span><br>Cool vibes.</h1>
-        <p>Welcome to <strong>Cool Kids Corner</strong> — a place to find your squad, share your clips, laugh at the
-          chaos, and make every lobby a little more fun.</p>
-        <div class="hero-actions"><a class="button button-primary invite" href="#">Join the Squad 🎮</a><a
-            class="button button-secondary" href="#about">Explore the Corner ↓</a></div>
-      </div>
-      <div class="hero-art" aria-label="Gaming-themed artwork"><span class="float f1">👑</span><span
-          class="float f2">✨</span><span class="float f3">💜</span><span class="float f4">⚡</span>
-        <div class="mascot">
-          <div class="emoji" aria-hidden="true">😎</div><strong class="gradient-text">COOL KIDS
-            CORNER</strong><small>PLAY • CONNECT • BE YOU</small>
+<header class="container">
+  <nav class="nav" aria-label="Main navigation">
+
+    <a class="brand" href="index.html" aria-label="Cool Kids Corner home">
+      <span class="brand-mark" aria-hidden="true">🎮</span>
+      <span>Cool Kids <span class="gradient-text">Corner</span></span>
+    </a>
+
+    <button class="menu-toggle" type="button"
+      aria-expanded="false" aria-controls="site-navigation">
+      <span aria-hidden="true">☰</span>
+      <span>Menu</span>
+    </button>
+
+    <div class="nav-links" id="site-navigation">
+      <a href="index.html">Home</a>
+
+      <div class="dropdown">
+        <button class="dropbtn" type="button">Games ▾</button>
+        <div class="dropdown-content">
+          <a href="games.html">All Games</a>
+          <a href="tabletop.html">Tabletop</a>
+          <a href="tcg.html">Card Games</a>
         </div>
       </div>
+
+      <a href="events.html">Events</a>
+      <a href="community.html">Community</a>
+      <a href="profile.html">Profile</a>
+      <a href="support.html">Support</a>
+
+      <a class="button button-primary invite"
+         href="https://discord.gg/xqWWU6aaDK"
+         target="_blank" rel="noopener noreferrer">
+        Join Discord ↗
+      </a>
     </div>
-    <section id="about">
+
+  </nav>
+</header>
+
+
+  <main id="main-content">
+
+    <!-- HERO -->
+    <section class="container hero" aria-labelledby="hero-title">
+      <div>
+        <div class="eyebrow">🎧 Your people. Your games. Your corner.</div>
+
+        <h1 id="hero-title">
+          Good games.<br>
+          <span class="gradient-text">Great people.</span><br>
+          Cool vibes.
+        </h1>
+
+        <p>
+          Welcome to <strong>Cool Kids Corner</strong> — a community for
+          gamers, by gamers. Find your next squad, discover something new, and make yourself
+          at home. There's more than one way to play here.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary invite" href="https://discord.gg/xqWWU6aaDK" target="_blank"
+            rel="noopener noreferrer">
+            Join the Community
+          </a>
+
+          <a class="button button-secondary" href="games.html">
+            Explore Our Games 🎮
+          </a>
+        </div>
+
+        <div class="hero-badges" aria-label="What you'll find here">
+          <span>🎮 Video Games</span>
+          <span>🐉 Tabletop Adventures</span>
+          <span>🃏 Trading Cards</span>
+          <span>🏳️‍🌈 LGBTQ+ Friendly</span>
+          <span>💜 Community First</span>
+        </div>
+
+        <form class="home-search" action="games.html" method="get" role="search">
+          <label for="game-search" class="skip-link">Search the game directory</label>
+          <input id="game-search" type="search" name="q" placeholder="Looking for a game? Search here..."
+            autocomplete="on">
+          <button class="button button-secondary" type="submit">
+            Search 🔎
+          </button>
+        </form>
+      </div>
+
+      <div class="hero-art" aria-label="Cool Kids Corner gaming artwork">
+        <span class="float f1" aria-hidden="true">👑</span>
+        <span class="float f2" aria-hidden="true">✨</span>
+        <span class="float f3" aria-hidden="true">💜</span>
+        <span class="float f4" aria-hidden="true">⚡</span>
+
+        <div class="mascot">
+          <div class="emoji" aria-hidden="true">🎮</div>
+          <strong class="gradient-text">COOL KIDS<br>CORNER</strong>
+          <small>PLAY • CONNECT • BE YOU</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME DIRECTORY PREVIEW -->
+    <section id="explore">
       <div class="container">
         <div class="section-heading">
-          <div class="eyebrow">Welcome to the lobby</div>
-          <h2>Your corner of the gaming universe.</h2>
-          <p>Whether you're here to sweat the ranked grind or just hang out, there's room for you in the squad.</p>
+          <div class="eyebrow">Choose your adventure</div>
+          <h2>One community. A whole lot of ways to play.</h2>
+          <p>
+            Into survival games, cozy worlds, epic quests, or collecting
+            the perfect deck? Find your kind of fun and the people who
+            love it too.
+          </p>
         </div>
-        <div class="cards" id="perks">
+
+        <div class="cards">
           <article class="card">
-            <div class="card-icon">🕹️</div>
-            <h3>Find Your Next Duo</h3>
-            <p>Meet players, build a squad, and find people who are always down for one more match.</p>
+            <a class="card-link" href="games.html">
+              <div class="card-icon" aria-hidden="true">🎮</div>
+              <h3>Video Games</h3>
+              <p>
+                Explore games like Minecraft, Palia, Day of Dragons, The Isle,
+                Elder Scrolls Online, and Much Much More.
+              </p>
+              <span class="section-link">Browse the game directory →</span>
+            </a>
           </article>
+
           <article class="card">
-            <div class="card-icon">💬</div>
-            <h3>Hang Out & Have a Laugh</h3>
-            <p>Share memes, talk games, post clips, and turn random chats into great memories.</p>
+            <a class="card-link" href="tabletop.html">
+              <div class="card-icon" aria-hidden="true">🐉</div>
+              <h3>Tabletop RPGs</h3>
+              <p>
+                Roll the dice, build a character, tell a great story,
+                and find your next Dungeons & Dragons adventure.
+              </p>
+              <span class="section-link">Enter the tavern →</span>
+            </a>
           </article>
+
           <article class="card">
-            <div class="card-icon">✨</div>
-            <h3>Keep the Vibes Good</h3>
-            <p>Be yourself, respect the crew, and help make the Corner a place people want to return to.</p>
+            <a class="card-link" href="tcg.html">
+              <div class="card-icon" aria-hidden="true">🃏</div>
+              <h3>Trading Card Games</h3>
+              <p>
+                Talk decks, trade tips, and share your passion for
+                Pokémon, Magic: The Gathering, and more.
+              </p>
+              <span class="section-link">Explore card games →</span>
+            </a>
+          </article>
+        </div>
+
+        <p>
+          <a class="section-link" href="games.html">
+            See all games and find your next favorite →
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section id="community">
+      <div class="container">
+        <div class="section-heading">
+          <div class="eyebrow">More than a game lobby</div>
+          <h2>Come for the games. Stay for the friends.</h2>
+          <p>
+            Whether you're looking for a regular group or just somewhere
+            to chat, Cool Kids Corner is about making gaming more fun
+            together.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="card-icon" aria-hidden="true">🤝</div>
+            <h3>Find Your People</h3>
+            <p>
+              Meet other players, find teammates, share recommendations,
+              and make connections without needing to be the best in
+              the lobby.
+            </p>
+            <a class="section-link" href="community.html">Meet the community →</a>
+          </article>
+
+          <article class="feature-card">
+            <div class="card-icon" aria-hidden="true">📅</div>
+            <h3>Play Together</h3>
+            <p>
+              Discover community events, group gaming sessions, and
+              opportunities to jump into something fun with other members.
+            </p>
+            <a class="section-link" href="events.html">Explore events →</a>
+          </article>
+
+          <article class="feature-card">
+            <div class="card-icon" aria-hidden="true">📚</div>
+            <h3>Learn & Share</h3>
+            <p>
+              Swap advice, share useful guides, learn game mechanics,
+              and help fellow players on their next adventure.
+            </p>
+            <a class="section-link" href="games.html#guides">Find game resources →</a>
           </article>
         </div>
       </div>
     </section>
+
+    <!-- EVENTS -->
+    <section id="events">
+      <div class="container">
+        <div class="community-banner">
+          <div>
+            <div class="eyebrow">🎉 Something to look forward to</div>
+            <h2>Make plans. Make memories.</h2>
+            <p>
+              Community events are a chance to meet new people, revisit
+              favorite games, and try something different together.
+              Head to the events page for community activities and updates.
+            </p>
+          </div>
+
+          <a class="button button-primary" href="events.html">
+            Explore Events →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMUNITY GUIDELINES -->
     <section id="rules">
       <div class="container rules">
         <div class="section-heading">
           <div class="eyebrow">The golden rules</div>
           <h2>Keep it cool. 😎</h2>
-          <p>A great community starts with people treating each other right. Easy wins only.</p>
+          <p>
+            Great communities don't happen by accident.
+            Let's make this a place where people feel welcome,
+            respected, and safe to be themselves.
+          </p>
+
+          <a class="section-link" href="community.html#rules">
+            Community information →
+          </a>
         </div>
+
         <div class="rules-panel">
-          <div class="rule"><span>01</span>
-            <p><strong>Respect everyone.</strong><br>No harassment, bullying, hate speech, or personal attacks.</p>
-          </div>
-          <div class="rule"><span>02</span>
-            <p><strong>Keep it appropriate.</strong><br>Follow Discord's rules and keep content in the right channels.
+          <div class="rule">
+            <span>01</span>
+            <p>
+              <strong>Respect everyone.</strong><br>
+              No harassment, bullying, hate speech, or personal attacks.
             </p>
           </div>
-          <div class="rule"><span>03</span>
-            <p><strong>No spam or drama.</strong><br>Let people chat, game, and enjoy the server without disruption.</p>
+
+          <div class="rule">
+            <span>02</span>
+            <p>
+              <strong>Keep it appropriate.</strong><br>
+              Follow Discord's rules and keep content in the right channels.
+            </p>
           </div>
-          <div class="rule"><span>04</span>
-            <p><strong>Protect your privacy.</strong><br>Don't share passwords, private information, or someone else's
-              details.</p>
+
+          <div class="rule">
+            <span>03</span>
+            <p>
+              <strong>No spam or unnecessary drama.</strong><br>
+              Give everyone room to chat, game, and enjoy the community.
+            </p>
           </div>
-          <div class="rule"><span>05</span>
-            <p><strong>Have fun and include people.</strong><br>Good games are better when everyone feels welcome.</p>
+
+          <div class="rule">
+            <span>04</span>
+            <p>
+              <strong>Protect privacy.</strong><br>
+              Never share passwords, private information, or another
+              person's details without permission.
+            </p>
+          </div>
+
+          <div class="rule">
+            <span>05</span>
+            <p>
+              <strong>Include people and have fun.</strong><br>
+              Be kind to every new and existing member and help make the Corner a place
+              people want to return to.
+            </p>
           </div>
         </div>
       </div>
     </section>
-    <section>
+
+    <!-- DISCORD CTA -->
+    <section id="join">
       <div class="container">
         <div class="cta">
-          <div class="eyebrow">Party up?</div>
+          <div class="eyebrow">Your next adventure starts here</div>
           <h2>There's a spot for you here.</h2>
-          <p>Grab your headset, say hey, and jump into the next adventure with Cool Kids Corner.</p><a
-            class="button button-primary invite" href="#">Let's Game 🚀</a>
+          <p>
+            Grab your headset, bring your favorite game, and say hello.
+            Whether you're here to compete, explore, collect, or simply
+            hang out, we'd love to have you around.
+          </p>
+
+          <a class="button button-primary invite" href="https://discord.gg/xqWWU6aaDK" target="_blank"
+            rel="noopener noreferrer">
+            Join Cool Kids Corner on Discord 🚀
+          </a>
         </div>
       </div>
     </section>
+
+    <!-- SUPPORT -->
+    <section id="support">
+      <div class="container">
+        <div class="community-banner">
+          <div>
+            <div class="eyebrow">💜 Built by the community</div>
+            <h2>Help keep the Corner growing.</h2>
+            <p>
+              Community support helps with website costs, development,
+              and activities that bring members together. Supporting us
+              is completely optional — being part of the community matters
+              most.
+            </p>
+          </div>
+
+          <a class="button button-secondary" href="support.html">
+            Support the Corner 💜
+          </a>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer>
-    <div class="container footer-inner"><span>© <span id="year"></span> Cool Kids Corner</span><span>Made for good games
-        and better company 💜</span></div>
+    <div class="container footer-inner">
+      <span>
+        © <span id="year"></span> Cool Kids Corner
+      </span>
+
+      <div class="footer-links">
+        <a href="games.html">Games</a>
+        <a href="community.html">Community</a>
+        <a href="events.html">Events</a>
+        <a href="support.html">Support</a>
+        <a class="invite" href="https://discord.gg/xqWWU6aaDK" target="_blank" rel="noopener noreferrer">
+          Discord ↗
+        </a>
+      </div>
+
+      <span>Made for good games and better company 💜</span>
+    </div>
   </footer>
+
   <script>
-    const DISCORD_INVITE_URL = "https://discord.gg/xqWWU6aaDK"; // Paste your permanent Discord invite URL between the quotes.
-    document.getElementById("year").textContent = new Date().getFullYear();
-    document.querySelectorAll(".invite").forEach(link => {
-      if (DISCORD_INVITE_URL) {link.href = DISCORD_INVITE_URL; link.target = "_blank"; link.rel = "noopener noreferrer";}
-      else {link.addEventListener("click", event => {event.preventDefault(); alert("Add your Discord invite URL to the DISCORD_INVITE_URL setting in this HTML file.");});}
+    // Update the copyright year automatically.
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    // Accessible mobile navigation.
+    const menuToggle = document.querySelector(".menu-toggle");
+    const siteNavigation = document.getElementById("site-navigation");
+
+    menuToggle.addEventListener("click", () => {
+      const isExpanded =
+        menuToggle.getAttribute("aria-expanded") === "true";
+
+      menuToggle.setAttribute("aria-expanded", String(!isExpanded));
+      siteNavigation.classList.toggle("is-open", !isExpanded);
+    });
+
+    // Close the mobile menu after selecting a navigation link.
+    siteNavigation.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        menuToggle.setAttribute("aria-expanded", "false");
+        siteNavigation.classList.remove("is-open");
+      });
     });
   </script>
 </body>
