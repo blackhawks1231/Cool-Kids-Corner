@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080b18">
   <meta name="description"
-    content="Your Cool Kids Corner member profile template: share your favorite games, hobbies, and community interests.">
+    content="Sign in with Discord and customize your Cool Kids Corner member profile.">
   <title>Cool Kids Corner | Profile</title>
   <link rel="icon" type="image/png" href="pngegg.png">
   <link rel="stylesheet" href="style.css">
@@ -65,8 +65,9 @@
 
     <section class="profile-section" id="login-panel">
       <h2>Connect your Discord account</h2>
-      <p>Sign in to see your Discord avatar, server ranks, and saved games. Only members of Cool Kids Corner can use this profile.</p>
-      <a id="login-link" class="button button-primary" href="#">Sign in with Discord</a>
+      <p>Sign in to see your Discord avatar, server ranks, and saved games. Sign in with Discord to customize your profile. Server membership and ranks will be verified in a later setup step.</p>
+      <button id="login-link" type="button" class="button button-primary">Sign in with Discord</button>
+      <p id="login-status" role="status" aria-live="polite"></p>
     </section>
     <div class="profile-layout" id="player-profile" hidden>
       <aside class="profile-card">
@@ -119,77 +120,118 @@
     }));
   </script>
 
-  <script>
-  // Set this to your public HTTPS profile API URL, without a trailing slash.
-  const PROFILE_API = 'https://YOUR-API-HOST.example.com';
-  const tokenKey = 'ckc_profile_token';
-  const statusEl = document.getElementById('profile-status');
-  const loginPanel = document.getElementById('login-panel');
-  const playerPanel = document.getElementById('player-profile');
-  document.getElementById('login-link').href = PROFILE_API + '/auth/login';
-  const token = () => sessionStorage.getItem(tokenKey);
-  async function api(path, options = {}) {
-    const res = await fetch(PROFILE_API + path, {
-      ...options,
-      headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json', ...(options.headers || {}) }
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const supabase = createClient(
+      'https://shccafzacjnubcqlzbkp.supabase.co',
+      'sb_publishable_zUhccuh1IkwmX-MGgU4oKA_2HbcS6wP'
+    );
+    const loginPanel = document.getElementById('login-panel');
+    const playerPanel = document.getElementById('player-profile');
+    const loginStatus = document.getElementById('login-status');
+    const profileStatus = document.getElementById('profile-status');
+    const games = [
+      'Fortnite', 'Apex Legends', 'Call of Duty', 'Battlefield', 'ARC Raiders',
+      'Helldivers 2', 'The Isle', 'Minecraft', 'Palia', 'Day of Dragons',
+      'Roblox', 'World of Warcraft', 'Elder Scrolls Online', 'Final Fantasy XIV',
+      'Tabletop RPGs', 'Trading Card Games', 'Warframe'
+    ];
+    let currentUser = null;
+
+    document.getElementById('login-link').addEventListener('click', async () => {
+      loginStatus.textContent = 'Opening Discord login…';
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'discord',
+        options: { redirectTo: 'https://blackhawks1231.github.io/Cool-Kids-Corner/profile.html' }
+      });
+      if (error) loginStatus.textContent = error.message;
     });
-    if (!res.ok) throw new Error('Request failed (' + res.status + ')');
-    return res.json();
-  }
-  async function showProfile() {
-    const data = await api('/api/me');
-    document.getElementById('discord-name').textContent = data.name;
-    document.getElementById('discord-avatar').src = data.avatar;
-    document.getElementById('profile-bio').value = data.bio;
-    document.getElementById('profile-interests').value = data.interests;
-    const roles = document.getElementById('discord-roles');
-    roles.replaceChildren();
-    data.roles.forEach(role => {
-      const span = document.createElement('span'); span.className = 'tag'; span.textContent = role.name;
-      if (role.color) span.style.borderColor = '#' + role.color.toString(16).padStart(6, '0');
-      roles.appendChild(span);
-    });
-    const choices = document.getElementById('game-choices');
-    choices.replaceChildren();
-    data.available_games.forEach(game => {
-      const label = document.createElement('label'); label.className = 'tag';
-      const check = document.createElement('input'); check.type = 'checkbox'; check.value = game; check.checked = data.games.includes(game);
-      label.append(check, document.createTextNode(' ' + game)); choices.appendChild(label);
-    });
-    loginPanel.hidden = true; playerPanel.hidden = false;
-  }
-  document.getElementById('save-profile').addEventListener('click', async () => {
-    statusEl.textContent = 'Saving…';
-    const games = [...document.querySelectorAll('#game-choices input:checked')].map(x => x.value);
-    try {
-      await api('/api/me', { method: 'PUT', body: JSON.stringify({
-        bio: document.getElementById('profile-bio').value,
-        interests: document.getElementById('profile-interests').value, games
-      }) });
-      statusEl.textContent = '💜 Profile saved!';
-    } catch (err) { statusEl.textContent = 'Could not save: ' + err.message; }
-  });
-  document.getElementById('logout-button').addEventListener('click', async () => {
-    try { await api('/auth/logout', { method: 'POST' }); } catch (_) {}
-    sessionStorage.removeItem(tokenKey); playerPanel.hidden = true; loginPanel.hidden = false;
-  });
-  (async () => {
-    const match = location.hash.match(/^#ticket=([A-Za-z0-9_-]+)$/);
-    if (match) {
-      history.replaceState(null, '', location.pathname + location.search);
-      try {
-        const res = await fetch(PROFILE_API + '/auth/exchange', {
-          method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ticket: match[1]})
-        });
-        if (!res.ok) throw new Error('Login expired. Please try again.');
-        sessionStorage.setItem(tokenKey, (await res.json()).token);
-      } catch (err) { loginPanel.querySelector('p').textContent = err.message; }
+
+    function renderGames(selected = []) {
+      const choices = document.getElementById('game-choices');
+      choices.replaceChildren();
+      games.forEach(game => {
+        const label = document.createElement('label');
+        label.className = 'tag';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = game;
+        checkbox.checked = selected.includes(game);
+        label.append(checkbox, document.createTextNode(' ' + game));
+        choices.appendChild(label);
+      });
     }
-    if (token()) {
-      try { await showProfile(); }
-      catch (err) { sessionStorage.removeItem(tokenKey); loginPanel.querySelector('p').textContent = 'Could not load your profile. Check your membership or try signing in again.'; }
+
+    async function showProfile(user) {
+      currentUser = user;
+      const metadata = user.user_metadata || {};
+      document.getElementById('discord-name').textContent =
+        metadata.full_name || metadata.name || metadata.preferred_username || 'Discord member';
+      const avatar = document.getElementById('discord-avatar');
+      avatar.src = metadata.avatar_url || 'pngegg.png';
+      avatar.onerror = () => { avatar.onerror = null; avatar.src = 'pngegg.png'; };
+      const roles = document.getElementById('discord-roles');
+      roles.replaceChildren();
+      const roleNotice = document.createElement('span');
+      roleNotice.className = 'tag';
+      roleNotice.textContent = 'Discord roles: syncing not yet configured';
+      roles.appendChild(roleNotice);
+
+      const { data, error } = await supabase.from('member_profiles')
+        .select('bio, interests, games').eq('user_id', user.id).maybeSingle();
+      if (error) {
+        profileStatus.textContent = 'Could not load saved details: ' + error.message;
+      } else {
+        profileStatus.textContent = '';
+      }
+      document.getElementById('profile-bio').value = data?.bio || '';
+      document.getElementById('profile-interests').value = data?.interests || '';
+      renderGames(Array.isArray(data?.games) ? data.games : []);
+      loginPanel.hidden = true;
+      playerPanel.hidden = false;
     }
-  })();
+
+    document.getElementById('save-profile').addEventListener('click', async () => {
+      if (!currentUser) return;
+      profileStatus.textContent = 'Saving…';
+      const selectedGames = [...document.querySelectorAll('#game-choices input:checked')]
+        .map(input => input.value);
+      const { error } = await supabase.from('member_profiles').upsert({
+        user_id: currentUser.id,
+        bio: document.getElementById('profile-bio').value.slice(0, 500),
+        interests: document.getElementById('profile-interests').value.slice(0, 300),
+        games: selectedGames,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id' });
+      profileStatus.textContent = error ? 'Could not save: ' + error.message : '💜 Profile saved!';
+    });
+
+    document.getElementById('logout-button').addEventListener('click', async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) { profileStatus.textContent = error.message; return; }
+      currentUser = null;
+      playerPanel.hidden = true;
+      loginPanel.hidden = false;
+      loginStatus.textContent = 'Signed out.';
+    });
+
+    async function initialize() {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) loginStatus.textContent = error.message;
+      if (session?.user) await showProfile(session.user);
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_OUT') {
+          currentUser = null;
+          playerPanel.hidden = true;
+          loginPanel.hidden = false;
+        } else if (event === 'SIGNED_IN' && session?.user && session.user.id !== currentUser?.id) {
+          // Avoid running Supabase database queries synchronously inside the auth callback.
+          setTimeout(() => showProfile(session.user), 0);
+        }
+      });
+    }
+    initialize().catch(err => { loginStatus.textContent = 'Login setup error: ' + err.message; });
   </script>
 </body>
 
