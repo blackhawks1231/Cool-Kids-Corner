@@ -7,8 +7,8 @@
   <meta name="theme-color" content="#080b18">
   <meta name="description"
     content="Your Cool Kids Corner member profile template: share your favorite games, hobbies, and community interests.">
-  <title>Member Profile | Cool Kids Corner</title>
-  <link rel="icon" type="image/png" href="images/pngegg.png">
+  <title>Cool Kids Corner | Profile</title>
+  <link rel="icon" type="image/png" href="pngegg.png">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -46,7 +46,7 @@
       <a href="support.html">Support</a>
 
       <a class="button button-primary invite"
-         href="https://discord.gg/xqWWU6aaDK"
+         href="https://discord.gg/mnwHc9mcsq"
          target="_blank" rel="noopener noreferrer">
         Join Discord ↗
       </a>
@@ -63,63 +63,34 @@
         join.</p>
     </section>
 
-    <aside class="template-note" aria-label="Profile template note">
-      <strong>Starter profile template</strong>
-      <p>This page is currently a static example. You can edit the sample details in <code>profile.html</code>, but
-        changes aren't saved through a form and members don't have individual logins yet.</p>
-    </aside>
-
-    <div class="profile-layout">
-      <aside class="profile-card" aria-label="Member summary">
-        <div class="avatar" aria-hidden="true">🦊</div>
+    <section class="profile-section" id="login-panel">
+      <h2>Connect your Discord account</h2>
+      <p>Sign in to see your Discord avatar, server ranks, and saved games. Only members of Cool Kids Corner can use this profile.</p>
+      <a id="login-link" class="button button-primary" href="#">Sign in with Discord</a>
+    </section>
+    <div class="profile-layout" id="player-profile" hidden>
+      <aside class="profile-card">
+        <img id="discord-avatar" class="avatar" alt="Your Discord avatar" style="width:100px;height:100px;object-fit:cover;border-radius:50%">
         <div class="eyebrow">Cool Kids Corner member</div>
-        <h2>Player Name</h2>
-        <span class="member-tag">🎮 Casual gamer · Friendly adventurer</span>
-        <p class="muted">Here for good games, cozy hangs, chaotic quests, and meeting nice people to play with.</p>
-        <div class="profile-actions">
-          <a class="button button-primary" href="https://discord.gg/xqWWU6aaDK" target="_blank"
-            rel="noopener noreferrer">Find us on Discord ↗</a>
-          <a class="button button-secondary" href="games.html">Browse Games</a>
-        </div>
+        <h2 id="discord-name"></h2>
+        <div id="discord-roles" class="tag-list"></div>
+        <div class="profile-actions"><button type="button" id="logout-button" class="button button-secondary">Sign out</button></div>
       </aside>
-
       <div class="profile-details">
         <section class="profile-section">
-          <div class="eyebrow">A bit about me</div>
-          <h2>Hey, welcome to my profile!</h2>
-          <p>I'm into exploring new worlds, teaming up for co-op adventures, collecting cool cards, and making up
-            stories around a tabletop. I'm always happy to hear about a game you think I should try.</p>
+          <div class="eyebrow">Your introduction</div><h2>About me</h2>
+          <label for="profile-bio">Bio (up to 500 characters)</label>
+          <textarea id="profile-bio" maxlength="500" rows="5" style="width:100%"></textarea>
         </section>
-
         <section class="profile-section">
-          <div class="eyebrow">Currently playing</div>
-          <h2>Favorite games</h2>
-          <div class="tag-list"><span class="tag">🌿 Palia</span><span class="tag">🦖 The Isle</span><span
-              class="tag">⛏️ Minecraft</span><span class="tag">⚔️ Elder Scrolls Online</span><span class="tag">🐉 Day of
-              Dragons</span></div>
+          <div class="eyebrow">Pick your favorites</div><h2>My games</h2>
+          <div id="game-choices" class="tag-list"></div>
         </section>
-
         <section class="profile-section">
-          <div class="eyebrow">Beyond the screen</div>
-          <h2>Other interests</h2>
-          <div class="interest-grid">
-            <div class="interest"><strong>🎲 Tabletop RPGs</strong><span>Dungeons & Dragons, character creation, and
-                collaborative storytelling.</span></div>
-            <div class="interest"><strong>🃏 Trading Card Games</strong><span>Pokémon TCG, Magic: The Gathering, and
-                Riftbound.</span></div>
-            <div class="interest"><strong>📅 Community Events</strong><span>Game nights, group adventures, and
-                low-pressure hangouts.</span></div>
-            <div class="interest"><strong>✨ Looking for</strong><span>Friendly teammates, new games to try, and people
-                to share the fun with.</span></div>
-          </div>
-        </section>
-
-        <section class="profile-section">
-          <div class="eyebrow">Say hello</div>
-          <h2>Let's play something!</h2>
-          <p>Want to find a group or meet other members? Drop by the community Discord and introduce yourself whenever
-            you're ready.</p>
-          <a class="section-link" href="community.html">Learn about the community →</a>
+          <div class="eyebrow">Beyond the screen</div><h2>Interests / Looking for</h2>
+          <textarea id="profile-interests" maxlength="300" rows="3" style="width:100%"></textarea>
+          <p><button type="button" class="button button-primary" id="save-profile">Save my profile</button></p>
+          <p id="profile-status" role="status" aria-live="polite"></p>
         </section>
       </div>
     </div>
@@ -129,7 +100,7 @@
     <div class="container footer-inner"><span>© <span id="year"></span> Cool Kids Corner</span>
       <div class="footer-links"><a href="index.html">Home</a><a href="games.html">Games</a><a
           href="tabletop.html">Tabletop</a><a href="events.html">Events</a><a href="support.html">Support</a><a
-          href="https://discord.gg/xqWWU6aaDK" target="_blank" rel="noopener noreferrer">Discord ↗</a></div><span>Made
+          href="https://discord.gg/mnwHc9mcsq" target="_blank" rel="noopener noreferrer">Discord ↗</a></div><span>Made
         for good games and better company 💜</span>
     </div>
   </footer>
@@ -146,6 +117,79 @@
       toggle.setAttribute('aria-expanded', 'false');
       navigation.classList.remove('is-open');
     }));
+  </script>
+
+  <script>
+  // Set this to your public HTTPS profile API URL, without a trailing slash.
+  const PROFILE_API = 'https://YOUR-API-HOST.example.com';
+  const tokenKey = 'ckc_profile_token';
+  const statusEl = document.getElementById('profile-status');
+  const loginPanel = document.getElementById('login-panel');
+  const playerPanel = document.getElementById('player-profile');
+  document.getElementById('login-link').href = PROFILE_API + '/auth/login';
+  const token = () => sessionStorage.getItem(tokenKey);
+  async function api(path, options = {}) {
+    const res = await fetch(PROFILE_API + path, {
+      ...options,
+      headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json', ...(options.headers || {}) }
+    });
+    if (!res.ok) throw new Error('Request failed (' + res.status + ')');
+    return res.json();
+  }
+  async function showProfile() {
+    const data = await api('/api/me');
+    document.getElementById('discord-name').textContent = data.name;
+    document.getElementById('discord-avatar').src = data.avatar;
+    document.getElementById('profile-bio').value = data.bio;
+    document.getElementById('profile-interests').value = data.interests;
+    const roles = document.getElementById('discord-roles');
+    roles.replaceChildren();
+    data.roles.forEach(role => {
+      const span = document.createElement('span'); span.className = 'tag'; span.textContent = role.name;
+      if (role.color) span.style.borderColor = '#' + role.color.toString(16).padStart(6, '0');
+      roles.appendChild(span);
+    });
+    const choices = document.getElementById('game-choices');
+    choices.replaceChildren();
+    data.available_games.forEach(game => {
+      const label = document.createElement('label'); label.className = 'tag';
+      const check = document.createElement('input'); check.type = 'checkbox'; check.value = game; check.checked = data.games.includes(game);
+      label.append(check, document.createTextNode(' ' + game)); choices.appendChild(label);
+    });
+    loginPanel.hidden = true; playerPanel.hidden = false;
+  }
+  document.getElementById('save-profile').addEventListener('click', async () => {
+    statusEl.textContent = 'Saving…';
+    const games = [...document.querySelectorAll('#game-choices input:checked')].map(x => x.value);
+    try {
+      await api('/api/me', { method: 'PUT', body: JSON.stringify({
+        bio: document.getElementById('profile-bio').value,
+        interests: document.getElementById('profile-interests').value, games
+      }) });
+      statusEl.textContent = '💜 Profile saved!';
+    } catch (err) { statusEl.textContent = 'Could not save: ' + err.message; }
+  });
+  document.getElementById('logout-button').addEventListener('click', async () => {
+    try { await api('/auth/logout', { method: 'POST' }); } catch (_) {}
+    sessionStorage.removeItem(tokenKey); playerPanel.hidden = true; loginPanel.hidden = false;
+  });
+  (async () => {
+    const match = location.hash.match(/^#ticket=([A-Za-z0-9_-]+)$/);
+    if (match) {
+      history.replaceState(null, '', location.pathname + location.search);
+      try {
+        const res = await fetch(PROFILE_API + '/auth/exchange', {
+          method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ticket: match[1]})
+        });
+        if (!res.ok) throw new Error('Login expired. Please try again.');
+        sessionStorage.setItem(tokenKey, (await res.json()).token);
+      } catch (err) { loginPanel.querySelector('p').textContent = err.message; }
+    }
+    if (token()) {
+      try { await showProfile(); }
+      catch (err) { sessionStorage.removeItem(tokenKey); loginPanel.querySelector('p').textContent = 'Could not load your profile. Check your membership or try signing in again.'; }
+    }
+  })();
   </script>
 </body>
 
