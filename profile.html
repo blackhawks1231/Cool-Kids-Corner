@@ -88,7 +88,7 @@
           <div class="eyebrow">Pick your favorites</div>
           <h2>My games</h2>
           <div id="selected-game-badges" class="tag-list"></div>
-          <div id="game-choices" class="tag-list"></div>
+          <div id="discord-game-roles" class="tag-list"></div>
         </section>
         <section class="profile-section">
           <div class="eyebrow">Beyond the screen</div>
@@ -261,6 +261,42 @@
         roles.appendChild(badge);
       }
 
+      const gameContainer = document.getElementById('discord-game-roles');
+      gameContainer.replaceChildren();
+
+      const gameNames = [
+        'Fortnite', 'Apex Legends', 'Call of Duty',
+        'Battlefield', 'ARC Raiders', 'Helldivers 2',
+        'The Isle', 'Minecraft', 'Palia', 'Day of Dragons',
+        'Roblox', 'World of Warcraft', 'Elder Scrolls Online',
+        'Final Fantasy XIV', 'Tabletop RPGs',
+        'Trading Card Games', 'Warframe'
+      ];
+
+      const discordGames = memberRoles.filter(role =>
+        gameNames.some(game =>
+          game.toLowerCase() === role.name.toLowerCase().trim()
+        )
+      );
+
+      for (const game of discordGames) {
+        const gameBadge = document.createElement('span');
+        gameBadge.className = 'tag';
+        gameBadge.textContent = '🎮 ' + game.name;
+
+        if (/^#[0-9a-fA-F]{6}$/.test(game.color || '')) {
+          gameBadge.style.borderColor = game.color;
+          gameBadge.style.color = game.color;
+        }
+
+        gameContainer.appendChild(gameBadge);
+      }
+
+      if (!discordGames.length) {
+        gameContainer.textContent = 'No game roles assigned yet.';
+      }
+
+
       const { data, error } = await supabase.from('member_profiles')
         .select('bio, interests, games').eq('user_id', user.id).maybeSingle();
       if (error) {
@@ -270,7 +306,6 @@
       }
       document.getElementById('profile-bio').value = data?.bio || '';
       document.getElementById('profile-interests').value = data?.interests || '';
-      renderGames(Array.isArray(data?.games) ? data.games : []);
       loginPanel.hidden = true;
       playerPanel.hidden = false;
     }
@@ -278,13 +313,10 @@
     document.getElementById('save-profile').addEventListener('click', async () => {
       if (!currentUser) return;
       profileStatus.textContent = 'Saving…';
-      const selectedGames = [...document.querySelectorAll('#game-choices input:checked')]
-        .map(input => input.value);
       const { error } = await supabase.from('member_profiles').upsert({
         user_id: currentUser.id,
         bio: document.getElementById('profile-bio').value.slice(0, 500),
         interests: document.getElementById('profile-interests').value.slice(0, 300),
-        games: selectedGames,
         updated_at: new Date().toISOString()
       }, { onConflict: 'user_id' });
       profileStatus.textContent = error ? 'Could not save: ' + error.message : '💜 Profile saved!';
