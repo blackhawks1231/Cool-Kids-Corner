@@ -12,17 +12,24 @@
     <link rel="stylesheet" href="style.css">
     <style>
 
-        .crew-layout { display:grid; grid-template-columns:minmax(220px, 1fr) minmax(0, 1.5fr); gap:1rem; margin:1.5rem 0 3rem; }
-        .crew-games, .crew-results { padding:1.3rem; border:1px solid rgba(133,120,255,.3); border-radius:18px; background:rgba(14,19,41,.8); }
-        .crew-games-list { display:grid; gap:.5rem; max-height:440px; overflow-y:auto; }
-        .crew-game { display:block; width:100%; padding:.75rem .9rem; border:1px solid rgba(135,150,220,.3); border-radius:10px; background:rgba(255,255,255,.035); color:inherit; text-align:left; cursor:pointer; font:inherit; }
-        .crew-game:hover, .crew-game[aria-pressed="true"] { border-color:#6fe7ee; background:rgba(111,231,238,.12); }
-        .crew-results h3 { margin-top:0; }
-        .crew-players { list-style:none; padding:0; margin:1rem 0 0; display:grid; gap:.65rem; }
-        .crew-player { display:flex; align-items:center; gap:.7rem; padding:.65rem; border:1px solid rgba(135,150,220,.2); border-radius:12px; }
-        .crew-player img { width:42px; height:42px; border-radius:50%; object-fit:cover; }
+        .crew-games-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1rem; margin:1.5rem 0 3rem; }
+        .crew-game { display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; min-height:175px; width:100%; padding:1.3rem; border:1px solid rgba(133,120,255,.38); border-radius:18px; background:linear-gradient(145deg,rgba(69,43,127,.42),rgba(13,25,48,.92)); color:inherit; text-align:left; cursor:pointer; font:inherit; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
+        .crew-game:hover,.crew-game:focus-visible { transform:translateY(-4px); border-color:#6fe7ee; box-shadow:0 10px 28px rgba(39,209,239,.12); }
+        .crew-game-icon { font-size:2.2rem; line-height:1.2; }
+        .crew-game-name { font-size:1.12rem; font-weight:750; line-height:1.3; margin-top:.8rem; }
+        .crew-game-action { color:#77eaf5; font-size:.88rem; margin-top:.5rem; }
+        .crew-modal { border:1px solid rgba(133,120,255,.5); border-radius:20px; background:#11172d; color:#f3f5ff; width:min(520px,calc(100% - 2rem)); max-height:min(80vh,750px); padding:1.5rem; box-shadow:0 24px 75px rgba(0,0,0,.6); }
+        .crew-modal::backdrop { background:rgba(3,6,17,.8); backdrop-filter:blur(5px); }
+        .crew-modal-header { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; }
+        .crew-modal-header h3 { margin:0; }
+        .crew-modal-close { background:rgba(255,255,255,.09); color:inherit; border:1px solid rgba(255,255,255,.2); border-radius:10px; font:inherit; font-size:1.4rem; cursor:pointer; padding:.1rem .6rem; }
+        .crew-modal-close:hover { border-color:#6fe7ee; }
+        .crew-players { list-style:none; padding:0; margin:1rem 0 0; display:grid; gap:.65rem; max-height:50vh; overflow-y:auto; }
+        .crew-player { display:flex; align-items:center; gap:.7rem; padding:.65rem; border:1px solid rgba(135,150,220,.25); border-radius:12px; }
+        .crew-player img,.crew-avatar-placeholder { width:42px; height:42px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+        .crew-avatar-placeholder { display:grid; place-items:center; background:rgba(139,92,246,.3); }
         .crew-player-name { overflow-wrap:anywhere; }
-        @media(max-width:700px) { .crew-layout { grid-template-columns:1fr; } .crew-games-list { max-height:240px; } }
+        @media(max-width:520px) { .crew-games-list { grid-template-columns:repeat(2,minmax(0,1fr)); gap:.7rem; } .crew-game { min-height:155px; padding:1rem; } .crew-game-name { font-size:1rem; } }
 
     </style>
 </head>
@@ -109,17 +116,15 @@
                 <h2 id="crew-title">🎮 Find Your Gaming Crew</h2>
                 <p>Choose a game to find Cool Kids Corner members who have its Discord role.</p>
             </div>
-            <div class="crew-layout">
-                <div class="crew-games">
-                    <h3>Choose a game</h3>
-                    <div id="crew-games-list" class="crew-games-list" aria-label="Games"></div>
+            <div id="crew-games-list" class="crew-games-list" aria-label="Choose a game"></div>
+            <dialog id="crew-modal" class="crew-modal" aria-labelledby="crew-selected-title">
+                <div class="crew-modal-header">
+                    <h3 id="crew-selected-title">Players</h3>
+                    <button type="button" id="crew-modal-close" class="crew-modal-close" aria-label="Close player list">×</button>
                 </div>
-                <div class="crew-results" aria-live="polite">
-                    <h3 id="crew-selected-title">Select a game</h3>
-                    <p id="crew-status">Select a game to see its players.</p>
-                    <ul id="crew-players" class="crew-players"></ul>
-                </div>
-            </div>
+                <p id="crew-status" aria-live="polite">Loading players…</p>
+                <ul id="crew-players" class="crew-players"></ul>
+            </dialog>
         </section>
 
         <section id="rules">
@@ -255,65 +260,89 @@
             'Roblox', 'World of Warcraft', 'Elder Scrolls Online', 'Final Fantasy XIV',
             'Tabletop RPGs', 'Trading Card Games', 'Warframe'
         ];
+        const gameIcons = ['🪂','🎯','🪖','💥','🚀','🛡️','🦖','⛏️','🌱','🐉','🧱','⚔️','🏰','✨','🎲','🃏','🤖'];
         const list = document.getElementById('crew-games-list');
+        const modal = document.getElementById('crew-modal');
         const players = document.getElementById('crew-players');
         const status = document.getElementById('crew-status');
         const title = document.getElementById('crew-selected-title');
+        const closeButton = document.getElementById('crew-modal-close');
         let requestNumber = 0;
-        async function showPlayers(game, button) {
+        closeButton.addEventListener('click', () => modal.close());
+        modal.addEventListener('close', () => { requestNumber++; });
+        async function showPlayers(game) {
             const request = ++requestNumber;
-            list.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
             title.textContent = game + ' Players';
             players.replaceChildren();
             status.textContent = 'Checking players…';
-            const { data: { user }, error: authError } = await supabase.auth.getUser();
-            if (request !== requestNumber) return;
-            if (authError || !user) {
-                status.replaceChildren(document.createTextNode('Sign in with Discord to view the player directory. '));
-                const link = document.createElement('a');
-                link.href = 'profile.html';
-                link.textContent = 'Sign in →';
-                status.appendChild(link);
-                return;
-            }
-            // Uses the restricted get_game_players RPC installed in Supabase.
-            const { data, error } = await supabase.rpc('get_game_players', { game_name: game });
-            if (request !== requestNumber) return;
-            if (error) {
-                status.textContent = 'Could not load players: ' + error.message;
-                console.error('Community player directory:', error);
-                return;
-            }
-            if (!Array.isArray(data) || !data.length) {
-                status.textContent = 'No players listed for this game yet.';
-                return;
-            }
-            status.textContent = data.length + (data.length === 1 ? ' player' : ' players');
-            data.forEach(member => {
-                const item = document.createElement('li');
-                item.className = 'crew-player';
-                if (typeof member.avatar_url === 'string' && /^https:\/\//.test(member.avatar_url)) {
-                    const avatar = document.createElement('img');
-                    avatar.src = member.avatar_url;
-                    avatar.alt = '';
-                    avatar.loading = 'lazy';
-                    avatar.referrerPolicy = 'no-referrer';
-                    item.appendChild(avatar);
+            if (!modal.open) modal.showModal();
+            closeButton.focus();
+            try {
+                const { data: { user }, error: authError } = await supabase.auth.getUser();
+                if (request !== requestNumber || !modal.open) return;
+                if (authError || !user) {
+                    status.replaceChildren(document.createTextNode('Sign in with Discord to view the player directory. '));
+                    const link = document.createElement('a');
+                    link.href = 'profile.html';
+                    link.textContent = 'Sign in →';
+                    status.appendChild(link);
+                    return;
                 }
-                const name = document.createElement('strong');
-                name.className = 'crew-player-name';
-                name.textContent = member.display_name || 'Discord member';
-                item.appendChild(name);
-                players.appendChild(item);
-            });
+                const { data, error } = await supabase.rpc('get_game_players', { game_name: game });
+                if (request !== requestNumber || !modal.open) return;
+                if (error) {
+                    status.textContent = 'Could not load players: ' + error.message;
+                    console.error('Community player directory:', error);
+                    return;
+                }
+                if (!Array.isArray(data) || !data.length) {
+                    status.textContent = 'No players listed for this game yet.';
+                    return;
+                }
+                status.textContent = data.length + (data.length === 1 ? ' player' : ' players');
+                data.forEach(member => {
+                    const item = document.createElement('li');
+                    item.className = 'crew-player';
+                    if (typeof member.avatar_url === 'string' && /^https:\/\//.test(member.avatar_url)) {
+                        const avatar = document.createElement('img');
+                        avatar.src = member.avatar_url;
+                        avatar.alt = '';
+                        avatar.loading = 'lazy';
+                        avatar.referrerPolicy = 'no-referrer';
+                        item.appendChild(avatar);
+                    } else {
+                        const placeholder = document.createElement('span');
+                        placeholder.className = 'crew-avatar-placeholder';
+                        placeholder.textContent = '🎮';
+                        item.appendChild(placeholder);
+                    }
+                    const name = document.createElement('strong');
+                    name.className = 'crew-player-name';
+                    name.textContent = member.display_name || 'Discord member';
+                    item.appendChild(name);
+                    players.appendChild(item);
+                });
+            } catch (error) {
+                if (request === requestNumber && modal.open) status.textContent = 'Unable to load players. Please try again.';
+                console.error('Community player directory:', error);
+            }
         }
-        gameNames.forEach(game => {
+        gameNames.forEach((game, index) => {
             const button = document.createElement('button');
             button.type = 'button';
             button.className = 'crew-game';
-            button.textContent = '🎮 ' + game;
-            button.setAttribute('aria-pressed', 'false');
-            button.addEventListener('click', () => showPlayers(game, button));
+            const icon = document.createElement('span');
+            icon.className = 'crew-game-icon';
+            icon.textContent = gameIcons[index];
+            icon.setAttribute('aria-hidden', 'true');
+            const name = document.createElement('span');
+            name.className = 'crew-game-name';
+            name.textContent = game;
+            const action = document.createElement('span');
+            action.className = 'crew-game-action';
+            action.textContent = 'View players →';
+            button.append(icon, name, action);
+            button.addEventListener('click', () => showPlayers(game));
             list.appendChild(button);
         });
     </script>
