@@ -176,8 +176,15 @@
       avatar.onerror = () => { avatar.onerror = null; avatar.src = 'pngegg.png'; };
       const roles = document.getElementById('discord-roles');
       roles.replaceChildren();
-      const { data: roleRows, error: roleError } = await supabase
-        .from('discord_member_roles').select('roles').limit(1);
+      const { data: discordId, error: identityError } = await supabase
+        .rpc('my_discord_id');
+      const { data: roleRows, error: roleError } = identityError || !discordId
+        ? { data: null, error: identityError || new Error('Discord account not linked.') }
+        : await supabase
+          .from('discord_member_roles')
+          .select('roles')
+          .eq('discord_id', discordId)
+          .limit(1);
       if (roleError) {
         const notice = document.createElement('span');
         notice.className = 'tag';
@@ -189,70 +196,103 @@
         notice.textContent = 'Roles not synced yet — make sure the bot is online.';
         roles.appendChild(notice);
       } else {
-        for (const role of (Array.isArray(roleRows[0].roles) ? roleRows[0].roles : [])) {
-          const badge = document.createElement('span');
-          badge.className = 'tag';
-          badge.textContent = role.name;
-          if (/^#[0-9a-fA-F]{6}$/.test(role.color || '')) badge.style.borderColor = role.color;
-          roles.appendChild(badge);
+
+
+
+        const memberRoles = Array.isArray(roleRows[0].roles)
+          ? roleRows[0].roles
+          : [];
+
+        const rankStyles = [
+          { name: 'owner', label: '👑 Owner', color: '#FACC15' },
+          { name: 'co-owner', label: '💎 Co-Owner', color: '#C084FC' },
+          { name: 'staff-manager', label: '⭐ Staff-Manager', color: '#F472B6' },
+          { name: 'head-admin', label: '⚔️ Head-Admin', color: '#F59E0B' },
+          { name: 'admin', label: '🛡️ Admin', color: '#3B82F6' },
+          { name: 'chat-mod', label: '💬 Chat-Mod', color: '#22D3EE' },
+          { name: 'helper', label: '🤝 Helper', color: '#34D399' },
+          { name: 'member', label: '💜 Member', color: '#A78BFA' }
+        ];
+
+        const normalizeRank = name =>
+          name.toLowerCase().trim().replace(/[\s_]+/g, '-');
+
+        const assignedRanks = memberRoles.map(role =>
+          normalizeRank(role.name)
+        );
+
+        // Find the highest rank the member has.
+        const highestRank = rankStyles.find(rank =>
+          assignedRanks.includes(rank.name)
+        );
+
+        // Use Member if no staff rank is assigned.
+        const displayRank = highestRank || rankStyles[rankStyles.length - 1];
+
+        const badge = document.createElement('span');
+        badge.className = 'tag';
+        badge.textContent = displayRank.label;
+        badge.style.borderColor = displayRank.color;
+        badge.style.color = displayRank.color;
+        roles.appendChild(badge);
+
+
+
+
+        const { data, error } = await supabase.from('member_profiles')
+          .select('bio, interests, games').eq('user_id', user.id).maybeSingle();
+        if (error) {
+          profileStatus.textContent = 'Could not load saved details: ' + error.message;
+        } else {
+          profileStatus.textContent = '';
         }
-        if (!roles.childElementCount) roles.textContent = 'No assigned Discord roles';
+        document.getElementById('profile-bio').value = data?.bio || '';
+        document.getElementById('profile-interests').value = data?.interests || '';
+        renderGames(Array.isArray(data?.games) ? data.games : []);
+        loginPanel.hidden = true;
+        playerPanel.hidden = false;
       }
 
-      const { data, error } = await supabase.from('member_profiles')
-        .select('bio, interests, games').eq('user_id', user.id).maybeSingle();
-      if (error) {
-        profileStatus.textContent = 'Could not load saved details: ' + error.message;
-      } else {
-        profileStatus.textContent = '';
-      }
-      document.getElementById('profile-bio').value = data?.bio || '';
-      document.getElementById('profile-interests').value = data?.interests || '';
-      renderGames(Array.isArray(data?.games) ? data.games : []);
-      loginPanel.hidden = true;
-      playerPanel.hidden = false;
-    }
-
-    document.getElementById('save-profile').addEventListener('click', async () => {
-      if (!currentUser) return;
-      profileStatus.textContent = 'Saving…';
-      const selectedGames = [...document.querySelectorAll('#game-choices input:checked')]
-        .map(input => input.value);
-      const { error } = await supabase.from('member_profiles').upsert({
-        user_id: currentUser.id,
-        bio: document.getElementById('profile-bio').value.slice(0, 500),
-        interests: document.getElementById('profile-interests').value.slice(0, 300),
-        games: selectedGames,
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'user_id' });
-      profileStatus.textContent = error ? 'Could not save: ' + error.message : '💜 Profile saved!';
-    });
-
-    document.getElementById('logout-button').addEventListener('click', async () => {
-      const { error } = await supabase.auth.signOut();
-      if (error) { profileStatus.textContent = error.message; return; }
-      currentUser = null;
-      playerPanel.hidden = true;
-      loginPanel.hidden = false;
-      loginStatus.textContent = 'Signed out.';
-    });
-
-    async function initialize() {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (error) loginStatus.textContent = error.message;
-      if (session?.user) await showProfile(session.user);
-      supabase.auth.onAuthStateChange((event, session) => {
-        if (event === 'SIGNED_OUT') {
-          currentUser = null;
-          playerPanel.hidden = true;
-          loginPanel.hidden = false;
-        } else if (event === 'SIGNED_IN' && session?.user && session.user.id !== currentUser?.id) {
-          // Avoid running Supabase database queries synchronously inside the auth callback.
-          setTimeout(() => showProfile(session.user), 0);
-        }
+      document.getElementById('save-profile').addEventListener('click', async () => {
+        if (!currentUser) return;
+        profileStatus.textContent = 'Saving…';
+        const selectedGames = [...document.querySelectorAll('#game-choices input:checked')]
+          .map(input => input.value);
+        const { error } = await supabase.from('member_profiles').upsert({
+          user_id: currentUser.id,
+          bio: document.getElementById('profile-bio').value.slice(0, 500),
+          interests: document.getElementById('profile-interests').value.slice(0, 300),
+          games: selectedGames,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id' });
+        profileStatus.textContent = error ? 'Could not save: ' + error.message : '💜 Profile saved!';
       });
-    }
-    initialize().catch(err => { loginStatus.textContent = 'Login setup error: ' + err.message; });
+
+      document.getElementById('logout-button').addEventListener('click', async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) { profileStatus.textContent = error.message; return; }
+        currentUser = null;
+        playerPanel.hidden = true;
+        loginPanel.hidden = false;
+        loginStatus.textContent = 'Signed out.';
+      });
+
+      async function initialize() {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) loginStatus.textContent = error.message;
+        if (session?.user) await showProfile(session.user);
+        supabase.auth.onAuthStateChange((event, session) => {
+          if (event === 'SIGNED_OUT') {
+            currentUser = null;
+            playerPanel.hidden = true;
+            loginPanel.hidden = false;
+          } else if (event === 'SIGNED_IN' && session?.user && session.user.id !== currentUser?.id) {
+            // Avoid running Supabase database queries synchronously inside the auth callback.
+            setTimeout(() => showProfile(session.user), 0);
+          }
+        });
+      }
+      initialize().catch(err => { loginStatus.textContent = 'Login setup error: ' + err.message; });
   </script>
 </body>
 
