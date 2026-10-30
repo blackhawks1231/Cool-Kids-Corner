@@ -5,8 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080b18">
-  <meta name="description"
-    content="Sign in with Discord and customize your Cool Kids Corner member profile.">
+  <meta name="description" content="Sign in with Discord and customize your Cool Kids Corner member profile.">
   <title>Cool Kids Corner | Profile</title>
   <link rel="icon" type="image/png" href="pngegg.png">
   <link rel="stylesheet" href="style.css">
@@ -15,45 +14,43 @@
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="container">
-  <nav class="nav" aria-label="Main navigation">
+    <nav class="nav" aria-label="Main navigation">
 
-    <a class="brand" href="index.html" aria-label="Cool Kids Corner home">
-      <span class="brand-mark" aria-hidden="true">🎮</span>
-      <span>Cool Kids <span class="gradient-text">Corner</span></span>
-    </a>
+      <a class="brand" href="index.html" aria-label="Cool Kids Corner home">
+        <span class="brand-mark" aria-hidden="true">🎮</span>
+        <span>Cool Kids <span class="gradient-text">Corner</span></span>
+      </a>
 
-    <button class="menu-toggle" type="button"
-      aria-expanded="false" aria-controls="site-navigation">
-      <span aria-hidden="true">☰</span>
-      <span>Menu</span>
-    </button>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">
+        <span aria-hidden="true">☰</span>
+        <span>Menu</span>
+      </button>
 
-    <div class="nav-links" id="site-navigation">
-      <a href="index.html">Home</a>
+      <div class="nav-links" id="site-navigation">
+        <a href="index.html">Home</a>
 
-      <div class="dropdown">
-        <button class="dropbtn" type="button">Games ▾</button>
-        <div class="dropdown-content">
-          <a href="games.html">All Games</a>
-          <a href="tabletop.html">Tabletop</a>
-          <a href="tcg.html">Card Games</a>
+        <div class="dropdown">
+          <button class="dropbtn" type="button">Games ▾</button>
+          <div class="dropdown-content">
+            <a href="games.html">All Games</a>
+            <a href="tabletop.html">Tabletop</a>
+            <a href="tcg.html">Card Games</a>
+          </div>
         </div>
+
+        <a href="events.html">Events</a>
+        <a href="community.html">Community</a>
+        <a href="profile.html">Profile</a>
+        <a href="support.html">Support</a>
+
+        <a class="button button-primary invite" href="https://discord.gg/mnwHc9mcsq" target="_blank"
+          rel="noopener noreferrer">
+          Join Discord ↗
+        </a>
       </div>
 
-      <a href="events.html">Events</a>
-      <a href="community.html">Community</a>
-      <a href="profile.html">Profile</a>
-      <a href="support.html">Support</a>
-
-      <a class="button button-primary invite"
-         href="https://discord.gg/mnwHc9mcsq"
-         target="_blank" rel="noopener noreferrer">
-        Join Discord ↗
-      </a>
-    </div>
-
-  </nav>
-</header>
+    </nav>
+  </header>
 
   <main id="main-content" class="container">
     <section class="page-hero">
@@ -65,30 +62,36 @@
 
     <section class="profile-section" id="login-panel">
       <h2>Connect your Discord account</h2>
-      <p>Sign in to see your Discord avatar, server ranks, and saved games. Sign in with Discord to customize your profile. Server membership and ranks will be verified in a later setup step.</p>
+      <p>Sign in to see your Discord avatar, server ranks, and saved games. Sign in with Discord to customize your
+        profile. Server membership and ranks will be verified in a later setup step.</p>
       <button id="login-link" type="button" class="button button-primary">Sign in with Discord</button>
       <p id="login-status" role="status" aria-live="polite"></p>
     </section>
     <div class="profile-layout" id="player-profile" hidden>
       <aside class="profile-card">
-        <img id="discord-avatar" class="avatar" alt="Your Discord avatar" style="width:100px;height:100px;object-fit:cover;border-radius:50%">
+        <img id="discord-avatar" class="avatar" alt="Your Discord avatar"
+          style="width:100px;height:100px;object-fit:cover;border-radius:50%">
         <div class="eyebrow">Cool Kids Corner member</div>
         <h2 id="discord-name"></h2>
         <div id="discord-roles" class="tag-list"></div>
-        <div class="profile-actions"><button type="button" id="logout-button" class="button button-secondary">Sign out</button></div>
+        <div class="profile-actions"><button type="button" id="logout-button" class="button button-secondary">Sign
+            out</button></div>
       </aside>
       <div class="profile-details">
         <section class="profile-section">
-          <div class="eyebrow">Your introduction</div><h2>About me</h2>
+          <div class="eyebrow">Your introduction</div>
+          <h2>About me</h2>
           <label for="profile-bio">Bio (up to 500 characters)</label>
           <textarea id="profile-bio" maxlength="500" rows="5" style="width:100%"></textarea>
         </section>
         <section class="profile-section">
-          <div class="eyebrow">Pick your favorites</div><h2>My games</h2>
+          <div class="eyebrow">Pick your favorites</div>
+          <h2>My games</h2>
           <div id="game-choices" class="tag-list"></div>
         </section>
         <section class="profile-section">
-          <div class="eyebrow">Beyond the screen</div><h2>Interests / Looking for</h2>
+          <div class="eyebrow">Beyond the screen</div>
+          <h2>Interests / Looking for</h2>
           <textarea id="profile-interests" maxlength="300" rows="3" style="width:100%"></textarea>
           <p><button type="button" class="button button-primary" id="save-profile">Save my profile</button></p>
           <p id="profile-status" role="status" aria-live="polite"></p>
@@ -173,10 +176,28 @@
       avatar.onerror = () => { avatar.onerror = null; avatar.src = 'pngegg.png'; };
       const roles = document.getElementById('discord-roles');
       roles.replaceChildren();
-      const roleNotice = document.createElement('span');
-      roleNotice.className = 'tag';
-      roleNotice.textContent = 'Discord roles: syncing not yet configured';
-      roles.appendChild(roleNotice);
+      const { data: roleRows, error: roleError } = await supabase
+        .from('discord_member_roles').select('roles').limit(1);
+      if (roleError) {
+        const notice = document.createElement('span');
+        notice.className = 'tag';
+        notice.textContent = 'Could not load Discord roles: ' + roleError.message;
+        roles.appendChild(notice);
+      } else if (!roleRows?.length) {
+        const notice = document.createElement('span');
+        notice.className = 'tag';
+        notice.textContent = 'Roles not synced yet — make sure the bot is online.';
+        roles.appendChild(notice);
+      } else {
+        for (const role of (Array.isArray(roleRows[0].roles) ? roleRows[0].roles : [])) {
+          const badge = document.createElement('span');
+          badge.className = 'tag';
+          badge.textContent = role.name;
+          if (/^#[0-9a-fA-F]{6}$/.test(role.color || '')) badge.style.borderColor = role.color;
+          roles.appendChild(badge);
+        }
+        if (!roles.childElementCount) roles.textContent = 'No assigned Discord roles';
+      }
 
       const { data, error } = await supabase.from('member_profiles')
         .select('bio, interests, games').eq('user_id', user.id).maybeSingle();
