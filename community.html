@@ -12,6 +12,18 @@
     <link rel="stylesheet" href="style.css">
     <style>
 
+        .crew-layout { display:grid; grid-template-columns:minmax(220px, 1fr) minmax(0, 1.5fr); gap:1rem; margin:1.5rem 0 3rem; }
+        .crew-games, .crew-results { padding:1.3rem; border:1px solid rgba(133,120,255,.3); border-radius:18px; background:rgba(14,19,41,.8); }
+        .crew-games-list { display:grid; gap:.5rem; max-height:440px; overflow-y:auto; }
+        .crew-game { display:block; width:100%; padding:.75rem .9rem; border:1px solid rgba(135,150,220,.3); border-radius:10px; background:rgba(255,255,255,.035); color:inherit; text-align:left; cursor:pointer; font:inherit; }
+        .crew-game:hover, .crew-game[aria-pressed="true"] { border-color:#6fe7ee; background:rgba(111,231,238,.12); }
+        .crew-results h3 { margin-top:0; }
+        .crew-players { list-style:none; padding:0; margin:1rem 0 0; display:grid; gap:.65rem; }
+        .crew-player { display:flex; align-items:center; gap:.7rem; padding:.65rem; border:1px solid rgba(135,150,220,.2); border-radius:12px; }
+        .crew-player img { width:42px; height:42px; border-radius:50%; object-fit:cover; }
+        .crew-player-name { overflow-wrap:anywhere; }
+        @media(max-width:700px) { .crew-layout { grid-template-columns:1fr; } .crew-games-list { max-height:240px; } }
+
     </style>
 </head>
 
@@ -88,6 +100,25 @@
                     <p>Keep an eye out for community gaming sessions, tabletop gatherings, and other group activities.
                     </p><a class="section-link" href="events.html">Explore events →</a>
                 </article>
+            </div>
+        </section>
+
+        <section id="find-players" aria-labelledby="crew-title">
+            <div class="section-heading">
+                <div class="eyebrow">Find your people</div>
+                <h2 id="crew-title">🎮 Find Your Gaming Crew</h2>
+                <p>Choose a game to find Cool Kids Corner members who have its Discord role.</p>
+            </div>
+            <div class="crew-layout">
+                <div class="crew-games">
+                    <h3>Choose a game</h3>
+                    <div id="crew-games-list" class="crew-games-list" aria-label="Games"></div>
+                </div>
+                <div class="crew-results" aria-live="polite">
+                    <h3 id="crew-selected-title">Select a game</h3>
+                    <p id="crew-status">Select a game to see its players.</p>
+                    <ul id="crew-players" class="crew-players"></ul>
+                </div>
             </div>
         </section>
 
@@ -212,6 +243,80 @@
     </footer>
     <script>
         document.getElementById('year').textContent = new Date().getFullYear(); const t = document.querySelector('.menu-toggle'), n = document.getElementById('site-navigation'); t.addEventListener('click', () => { const o = t.getAttribute('aria-expanded') === 'true'; t.setAttribute('aria-expanded', String(!o)); n.classList.toggle('is-open', !o) }); n.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { t.setAttribute('aria-expanded', 'false'); n.classList.remove('is-open') }));</script>
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+        const supabase = createClient(
+            'https://shccafzacjnubcqlzbkp.supabase.co',
+            'sb_publishable_zUhccuh1IkwmX-MGgU4oKA_2HbcS6wP'
+        );
+        const gameNames = [
+            'Fortnite', 'Apex Legends', 'Call of Duty', 'Battlefield', 'ARC Raiders',
+            'Helldivers 2', 'The Isle', 'Minecraft', 'Palia', 'Day of Dragons',
+            'Roblox', 'World of Warcraft', 'Elder Scrolls Online', 'Final Fantasy XIV',
+            'Tabletop RPGs', 'Trading Card Games', 'Warframe'
+        ];
+        const list = document.getElementById('crew-games-list');
+        const players = document.getElementById('crew-players');
+        const status = document.getElementById('crew-status');
+        const title = document.getElementById('crew-selected-title');
+        let requestNumber = 0;
+        async function showPlayers(game, button) {
+            const request = ++requestNumber;
+            list.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+            title.textContent = game + ' Players';
+            players.replaceChildren();
+            status.textContent = 'Checking players…';
+            const { data: { user }, error: authError } = await supabase.auth.getUser();
+            if (request !== requestNumber) return;
+            if (authError || !user) {
+                status.replaceChildren(document.createTextNode('Sign in with Discord to view the player directory. '));
+                const link = document.createElement('a');
+                link.href = 'profile.html';
+                link.textContent = 'Sign in →';
+                status.appendChild(link);
+                return;
+            }
+            // Uses the restricted get_game_players RPC installed in Supabase.
+            const { data, error } = await supabase.rpc('get_game_players', { game_name: game });
+            if (request !== requestNumber) return;
+            if (error) {
+                status.textContent = 'Could not load players: ' + error.message;
+                console.error('Community player directory:', error);
+                return;
+            }
+            if (!Array.isArray(data) || !data.length) {
+                status.textContent = 'No players listed for this game yet.';
+                return;
+            }
+            status.textContent = data.length + (data.length === 1 ? ' player' : ' players');
+            data.forEach(member => {
+                const item = document.createElement('li');
+                item.className = 'crew-player';
+                if (typeof member.avatar_url === 'string' && /^https:\/\//.test(member.avatar_url)) {
+                    const avatar = document.createElement('img');
+                    avatar.src = member.avatar_url;
+                    avatar.alt = '';
+                    avatar.loading = 'lazy';
+                    avatar.referrerPolicy = 'no-referrer';
+                    item.appendChild(avatar);
+                }
+                const name = document.createElement('strong');
+                name.className = 'crew-player-name';
+                name.textContent = member.display_name || 'Discord member';
+                item.appendChild(name);
+                players.appendChild(item);
+            });
+        }
+        gameNames.forEach(game => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'crew-game';
+            button.textContent = '🎮 ' + game;
+            button.setAttribute('aria-pressed', 'false');
+            button.addEventListener('click', () => showPlayers(game, button));
+            list.appendChild(button);
+        });
+    </script>
 </body>
 
 </html>
