@@ -87,6 +87,7 @@
         <section class="profile-section">
           <div class="eyebrow">Pick your favorites</div>
           <h2>My games</h2>
+          <div id="selected-game-badges" class="tag-list"></div>
           <div id="game-choices" class="tag-list"></div>
         </section>
         <section class="profile-section">
@@ -151,6 +152,26 @@
       if (error) loginStatus.textContent = error.message;
     });
 
+    function renderGameBadges() {
+      const container = document.getElementById('selected-game-badges');
+      container.replaceChildren();
+
+      const selectedGames = [
+        ...document.querySelectorAll('#game-choices input:checked')
+      ].map(input => input.value);
+
+      for (const game of selectedGames) {
+        const badge = document.createElement('span');
+        badge.className = 'tag';
+        badge.textContent = '🎮 ' + game;
+        container.appendChild(badge);
+      }
+
+      if (selectedGames.length === 0) {
+        container.textContent = 'No games selected yet.';
+      }
+    }
+
     function renderGames(selected = []) {
       const choices = document.getElementById('game-choices');
       choices.replaceChildren();
@@ -163,7 +184,10 @@
         checkbox.checked = selected.includes(game);
         label.append(checkbox, document.createTextNode(' ' + game));
         choices.appendChild(label);
+        checkbox.addEventListener('change', renderGameBadges);
       });
+
+      renderGameBadges();
     }
 
     async function showProfile(user) {
@@ -237,60 +261,60 @@
         roles.appendChild(badge);
       }
 
-        const { data, error } = await supabase.from('member_profiles')
-          .select('bio, interests, games').eq('user_id', user.id).maybeSingle();
-        if (error) {
-          profileStatus.textContent = 'Could not load saved details: ' + error.message;
-        } else {
-          profileStatus.textContent = '';
+      const { data, error } = await supabase.from('member_profiles')
+        .select('bio, interests, games').eq('user_id', user.id).maybeSingle();
+      if (error) {
+        profileStatus.textContent = 'Could not load saved details: ' + error.message;
+      } else {
+        profileStatus.textContent = '';
+      }
+      document.getElementById('profile-bio').value = data?.bio || '';
+      document.getElementById('profile-interests').value = data?.interests || '';
+      renderGames(Array.isArray(data?.games) ? data.games : []);
+      loginPanel.hidden = true;
+      playerPanel.hidden = false;
+    }
+
+    document.getElementById('save-profile').addEventListener('click', async () => {
+      if (!currentUser) return;
+      profileStatus.textContent = 'Saving…';
+      const selectedGames = [...document.querySelectorAll('#game-choices input:checked')]
+        .map(input => input.value);
+      const { error } = await supabase.from('member_profiles').upsert({
+        user_id: currentUser.id,
+        bio: document.getElementById('profile-bio').value.slice(0, 500),
+        interests: document.getElementById('profile-interests').value.slice(0, 300),
+        games: selectedGames,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id' });
+      profileStatus.textContent = error ? 'Could not save: ' + error.message : '💜 Profile saved!';
+    });
+
+    document.getElementById('logout-button').addEventListener('click', async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) { profileStatus.textContent = error.message; return; }
+      currentUser = null;
+      playerPanel.hidden = true;
+      loginPanel.hidden = false;
+      loginStatus.textContent = 'Signed out.';
+    });
+
+    async function initialize() {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) loginStatus.textContent = error.message;
+      if (session?.user) await showProfile(session.user);
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_OUT') {
+          currentUser = null;
+          playerPanel.hidden = true;
+          loginPanel.hidden = false;
+        } else if (event === 'SIGNED_IN' && session?.user && session.user.id !== currentUser?.id) {
+          // Avoid running Supabase database queries synchronously inside the auth callback.
+          setTimeout(() => showProfile(session.user), 0);
         }
-        document.getElementById('profile-bio').value = data?.bio || '';
-        document.getElementById('profile-interests').value = data?.interests || '';
-        renderGames(Array.isArray(data?.games) ? data.games : []);
-        loginPanel.hidden = true;
-        playerPanel.hidden = false;
-      }
-
-      document.getElementById('save-profile').addEventListener('click', async () => {
-        if (!currentUser) return;
-        profileStatus.textContent = 'Saving…';
-        const selectedGames = [...document.querySelectorAll('#game-choices input:checked')]
-          .map(input => input.value);
-        const { error } = await supabase.from('member_profiles').upsert({
-          user_id: currentUser.id,
-          bio: document.getElementById('profile-bio').value.slice(0, 500),
-          interests: document.getElementById('profile-interests').value.slice(0, 300),
-          games: selectedGames,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'user_id' });
-        profileStatus.textContent = error ? 'Could not save: ' + error.message : '💜 Profile saved!';
       });
-
-      document.getElementById('logout-button').addEventListener('click', async () => {
-        const { error } = await supabase.auth.signOut();
-        if (error) { profileStatus.textContent = error.message; return; }
-        currentUser = null;
-        playerPanel.hidden = true;
-        loginPanel.hidden = false;
-        loginStatus.textContent = 'Signed out.';
-      });
-
-      async function initialize() {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (error) loginStatus.textContent = error.message;
-        if (session?.user) await showProfile(session.user);
-        supabase.auth.onAuthStateChange((event, session) => {
-          if (event === 'SIGNED_OUT') {
-            currentUser = null;
-            playerPanel.hidden = true;
-            loginPanel.hidden = false;
-          } else if (event === 'SIGNED_IN' && session?.user && session.user.id !== currentUser?.id) {
-            // Avoid running Supabase database queries synchronously inside the auth callback.
-            setTimeout(() => showProfile(session.user), 0);
-          }
-        });
-      }
-      initialize().catch(err => { loginStatus.textContent = 'Login setup error: ' + err.message; });
+    }
+    initialize().catch(err => { loginStatus.textContent = 'Login setup error: ' + err.message; });
   </script>
 </body>
 
