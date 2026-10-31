@@ -74,6 +74,11 @@
         <div class="eyebrow">Cool Kids Corner member</div>
         <h2 id="discord-name"></h2>
         <div id="discord-roles" class="tag-list"></div>
+        <div id="discord-contact-actions" class="profile-actions" hidden style="display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem">
+          <a id="discord-friend-link" class="button button-primary" target="_blank" rel="noopener noreferrer">👥 Add on Discord</a>
+          <a id="discord-message-link" class="button button-secondary" target="_blank" rel="noopener noreferrer">💬 Message on Discord</a>
+          <p style="font-size:.8rem;opacity:.8;margin:.35rem 0 0">Discord may require you to sign in, share a server, or allow messages and friend requests.</p>
+        </div>
         <div class="profile-actions"><button type="button" id="logout-button" class="button button-secondary">Sign
             out</button></div>
       </aside>
@@ -300,6 +305,13 @@
         return;
       }
       const member = data[0];
+      // Discord IDs are decimal snowflakes. Validate before building outgoing links.
+      const safeId = String(discordId);
+      if (/^\d{15,22}$/.test(safeId)) {
+        document.getElementById('discord-friend-link').href = 'https://discord.com/users/' + safeId;
+        document.getElementById('discord-message-link').href = 'https://discord.com/channels/@me/' + safeId;
+        document.getElementById('discord-contact-actions').hidden = false;
+      }
       document.querySelector('.page-hero h1').textContent = 'Community Member Profile';
       document.querySelector('.page-hero p').textContent = 'Meet a member of Cool Kids Corner.';
       document.getElementById('discord-name').textContent = member.display_name || 'Discord member';
