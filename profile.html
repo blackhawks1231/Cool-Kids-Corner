@@ -140,7 +140,7 @@
       loginStatus.textContent = 'Opening Discord login…';
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'discord',
-        options: { redirectTo: 'https://blackhawks1231.github.io/Cool-Kids-Corner/profile.html' }
+        options: { redirectTo: 'https://blackhawks1231.github.io/Cool-Kids-Corner/profile.html' + window.location.search }
       });
       if (error) loginStatus.textContent = error.message;
     });
@@ -287,18 +287,105 @@
       loginStatus.textContent = 'Signed out.';
     });
 
+    const viewedDiscordId = new URLSearchParams(window.location.search).get('user');
+
+    async function showOtherMemberProfile(discordId) {
+      const { data, error } = await supabase.rpc('get_public_member_profile', {
+        target_discord_id: discordId
+      });
+      if (error || !Array.isArray(data) || !data.length) {
+        loginStatus.textContent = error
+          ? 'Could not load member profile: ' + error.message
+          : 'This member profile is not available.';
+        return;
+      }
+      const member = data[0];
+      document.querySelector('.page-hero h1').textContent = 'Community Member Profile';
+      document.querySelector('.page-hero p').textContent = 'Meet a member of Cool Kids Corner.';
+      document.getElementById('discord-name').textContent = member.display_name || 'Discord member';
+      const avatar = document.getElementById('discord-avatar');
+      avatar.alt = 'Discord avatar';
+      avatar.src = member.avatar_url || 'pngegg.png';
+      avatar.onerror = () => { avatar.onerror = null; avatar.src = 'pngegg.png'; };
+
+      const roleList = Array.isArray(member.roles) ? member.roles : [];
+      const rankStyles = [
+        ['owner', '👑 Owner', '#FACC15'],
+        ['co-owner', '💎 Co-Owner', '#C084FC'],
+        ['staff-manager', '⭐ Staff-Manager', '#F472B6'],
+        ['head-admin', '⚔️ Head-Admin', '#F59E0B'],
+        ['admin', '🛡️ Admin', '#3B82F6'],
+        ['chat-mod', '💬 Chat-Mod', '#22D3EE'],
+        ['helper', '🤝 Helper', '#34D399'],
+        ['member', '💜 Member', '#A78BFA']
+      ];
+      const normalized = roleList.map(role => String(role.name || '').toLowerCase().trim().replace(/[\s_]+/g, '-'));
+      const rank = rankStyles.find(r => normalized.includes(r[0])) || rankStyles[rankStyles.length - 1];
+      const roles = document.getElementById('discord-roles');
+      roles.replaceChildren();
+      const badge = document.createElement('span');
+      badge.className = 'tag';
+      badge.textContent = rank[1];
+      badge.style.borderColor = rank[2];
+      badge.style.color = rank[2];
+      roles.appendChild(badge);
+
+      const games = ['Fortnite', 'Apex Legends', 'Call of Duty', 'Battlefield', 'ARC Raiders',
+        'Helldivers 2', 'The Isle', 'Minecraft', 'Palia', 'Day of Dragons', 'Roblox',
+        'World of Warcraft', 'Elder Scrolls Online', 'Final Fantasy XIV',
+        'Tabletop RPGs', 'Trading Card Games'];
+      const normalizeGame = s => String(s || '').toLowerCase().trim().replace(/[\s_-]+/g, ' ');
+      const gameContainer = document.getElementById('discord-game-roles');
+      gameContainer.replaceChildren();
+      roleList.filter(role => games.some(g => normalizeGame(g) === normalizeGame(role.name)))
+        .forEach(role => {
+          const tag = document.createElement('span');
+          tag.className = 'tag';
+          tag.textContent = '🎮 ' + role.name;
+          if (/^#[0-9a-fA-F]{6}$/.test(role.color || '')) {
+            tag.style.borderColor = role.color;
+            tag.style.color = role.color;
+          }
+          gameContainer.appendChild(tag);
+        });
+      if (!gameContainer.children.length) gameContainer.textContent = 'No game roles assigned yet.';
+
+      document.getElementById('profile-bio').value = member.bio || '';
+      document.getElementById('profile-interests').value = member.interests || '';
+      document.getElementById('profile-bio').readOnly = true;
+      document.getElementById('profile-interests').readOnly = true;
+      document.getElementById('save-profile').hidden = true;
+      document.getElementById('logout-button').hidden = true;
+      document.querySelector('.profile-details .eyebrow').textContent = 'Member introduction';
+      document.querySelectorAll('.profile-details h2')[0].textContent = 'About this member';
+      document.querySelectorAll('.profile-details h2')[1].textContent = 'Games';
+      document.querySelectorAll('.profile-details label').forEach(label => label.hidden = true);
+      loginPanel.hidden = true;
+      playerPanel.hidden = false;
+    }
+
     async function initialize() {
       const { data: { session }, error } = await supabase.auth.getSession();
       if (error) loginStatus.textContent = error.message;
-      if (session?.user) await showProfile(session.user);
+      if (viewedDiscordId) {
+        if (session?.user) {
+          await showOtherMemberProfile(viewedDiscordId);
+        } else {
+          loginStatus.textContent = 'Sign in with Discord to view member profiles.';
+        }
+      } else if (session?.user) {
+        await showProfile(session.user);
+      }
       supabase.auth.onAuthStateChange((event, session) => {
         if (event === 'SIGNED_OUT') {
           currentUser = null;
           playerPanel.hidden = true;
           loginPanel.hidden = false;
-        } else if (event === 'SIGNED_IN' && session?.user && session.user.id !== currentUser?.id) {
+        } else if (event === 'SIGNED_IN' && session?.user && (viewedDiscordId || session.user.id !== currentUser?.id)) {
           // Avoid running Supabase database queries synchronously inside the auth callback.
-          setTimeout(() => showProfile(session.user), 0);
+          setTimeout(() => viewedDiscordId
+            ? showOtherMemberProfile(viewedDiscordId)
+            : showProfile(session.user), 0);
         }
       });
     }
