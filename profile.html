@@ -315,7 +315,7 @@
       const safeId = String(discordId);
       if (/^\d{15,22}$/.test(safeId)) {
         document.getElementById('discord-friend-link').href = 'https://discord.com/users/' + safeId;
-        document.getElementById('discord-message-link').href = 'https://discord.com/channels/@me/' + safeId;
+        document.getElementById('discord-message-link').href = `https://discord.com/channels/@me/${discordId}`
         document.getElementById('discord-contact-actions').hidden = false;
       }
       const displayName = member.discord_username || member.display_name || 'Discord member';
