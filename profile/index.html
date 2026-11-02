@@ -111,9 +111,9 @@
 
   <footer>
     <div class="container footer-inner"><span>© <span id="year"></span> Cool Kids Corner</span>
-      <div class="footer-links"><a href="/">Home</a><a href="/games/">Games</a><a
-          href="/tabletop/">Tabletop</a><a href="/events/">Events</a><a href="/support/">Support</a><a
-          href="https://discord.gg/mnwHc9mcsq" target="_blank" rel="noopener noreferrer">Discord ↗</a></div><span>Made
+      <div class="footer-links"><a href="/">Home</a><a href="/games/">Games</a><a href="/tabletop/">Tabletop</a><a
+          href="/events/">Events</a><a href="/support/">Support</a><a href="https://discord.gg/mnwHc9mcsq"
+          target="_blank" rel="noopener noreferrer">Discord ↗</a></div><span>Made
         for good games and better company 💜</span>
     </div>
   </footer>
@@ -197,13 +197,14 @@
 
         const rankStyles = [
           { name: 'owner', label: '👑 Owner', color: '#FACC15' },
-          { name: 'co-owner', label: '💎 Co-Owner', color: '#C084FC' },
-          { name: 'staff-manager', label: '⭐ Staff-Manager', color: '#F472B6' },
+          { name: 'co-owner', label: '💠 Co-Owner', color: '#C084FC' },
+          { name: 'staff-manager', label: '🎖️ Staff-Manager', color: '#F472B6' },
           { name: 'head-admin', label: '⚔️ Head-Admin', color: '#F59E0B' },
           { name: 'admin', label: '🛡️ Admin', color: '#3B82F6' },
-          { name: 'chat-mod', label: '💬 Chat-Mod', color: '#22D3EE' },
-          { name: 'helper', label: '🤝 Helper', color: '#34D399' },
-          { name: 'member', label: '💜 Member', color: '#A78BFA' }
+          { name: 'chat-mod', label: '👁️ Chat-Mod', color: '#22D3EE' },
+          { name: 'helper', label: '🧩 Helper', color: '#34D399' },
+          { name: 'partner', label: '🤝 Partner', color: '#FFD700' },
+          { name: 'member', label: '🎮 Member', color: '#A78BFA' }
         ];
 
         const normalizeRank = name =>
@@ -331,13 +332,14 @@
       const roleList = Array.isArray(member.roles) ? member.roles : [];
       const rankStyles = [
         ['owner', '👑 Owner', '#FACC15'],
-        ['co-owner', '💎 Co-Owner', '#C084FC'],
-        ['staff-manager', '⭐ Staff-Manager', '#F472B6'],
+        ['co-owner', '💠 Co-Owner', '#C084FC'],
+        ['staff-manager', '🎖️ Staff-Manager', '#F472B6'],
         ['head-admin', '⚔️ Head-Admin', '#F59E0B'],
         ['admin', '🛡️ Admin', '#3B82F6'],
-        ['chat-mod', '💬 Chat-Mod', '#22D3EE'],
-        ['helper', '🤝 Helper', '#34D399'],
-        ['member', '💜 Member', '#A78BFA']
+        ['chat-mod', '👁️ Chat-Mod', '#22D3EE'],
+        ['helper', '🧩 Helper', '#34D399'],
+        ['partner', '🤝 Partner', '#FFD700'],
+        ['member', '🎮 Member', '#A78BFA']
       ];
       const normalized = roleList.map(role => String(role.name || '').toLowerCase().trim().replace(/[\s_]+/g, '-'));
       const rank = rankStyles.find(r => normalized.includes(r[0])) || rankStyles[rankStyles.length - 1];
